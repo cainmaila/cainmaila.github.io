@@ -88,9 +88,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>趁著還沒忘記趕快寫來，如何用Github上面的空間建立自己的部落格。</p>
-<p>小弟之前是使用Google的部落格，本來是覺得其他間部落格平台自由度已經算是很高的，加上還有Google這個老爸，所以對他得信任度也一直很高。<br><br>不過說真的，寫久了之後，還是多少有些不方便，最近因為工作的關係一直在寫markdown文件，說真的寫md真的很方便，後來我一直嘗試在找在Google上直接用md語法寫部過格的方法，雖然有找到一些平台但是因為還是得同步到google，終究還是不太方便，最終我希望找個可以信任，免費空間，自由度高，最重要的是，我希望可以直接用markdown語法來寫。</p>
-<p>廢話不過說，先來解釋一下Github上架站這是怎麼回事。<br><br>實際上github上是可以設置自己的靜態網頁的，不過他有一定的規範要依循<br><br>首先建立一個新的專案，這個專案的名子一定得叫 <strong>你的帳號.github.io</strong>，別問我為什麼，這是規定XD，比方我的帳號是cainmaila，所以我就必須建立一個<strong>cainmaila.github.io</strong><br><br>建立完成後，你可以嘗試做一個index.html放在裡面。然後你可以到瀏覽器去看看<strong>cainmaila.github.io</strong>這個網址，應該就會出現你的首頁。</p>
-<p>聰明的你看到這裡，應該就可以知道，這個空間你可以放置自己靜態網站，github允許你放置html,image,css,js….</p>
+<p>小弟之前是使用Google的部落格，本來是覺得其他間部落格平台自由度已經算是很高的，加上還有Google這個老爸，所以對他得信任度也一直很高。<br><br>不過說真的，寫久了之後，還是多少有些不方便，最近因為工作的關係一直在寫markdown文件，說真的寫md真的很方便，後來我一直嘗試在找在Google上直接用md語法寫部落格的方法，雖然有找到一些平台但是因為還是得同步到google，終究還是不太方便，最終我希望找個可以信任，免費空間，自由度高，最重要的是，我希望可以直接用markdown語法來寫。</p>
+<p>廢話不過說，先來解釋一下Github上架站這是怎麼回事。<br><br>實際上Github上是可以設置自己的靜態網頁的，不過有一定的規範要依循<br><br>首先建立一個新的專案，這個專案的名子一定得叫 <strong>你的帳號.github.io</strong>，別問我為什麼，這是規定XD，比方我的帳號是cainmaila，所以我就必須建立一個<strong>cainmaila.github.io</strong><br><br>建立完成後，你可以嘗試做一個index.html放在裡面。然後你可以到瀏覽器去看看<strong>cainmaila.github.io</strong>這個網址，應該就會出現你的首頁。</p>
+<p>聰明的你看到這裡，應該就可以知道，這個空間你可以放置自己靜態網站，Github允許你放置html,image,css,js….</p>
 <p>到這裡，空間的問題解決了，再來是用markdown寫作的問題<br><br>這部分選擇性很多，總之就是找到一個寫markdown幫你產生html的公具，我最後選擇了老牌子的<strong>Hexo</strong>，有什麼功能先不多說，之後可以去<a href="https://hexo.io/zh-tw/" target="_blank" rel="external">Hexo官網看一下</a></p>
 <p>這裡直接說明怎麼安裝，架設，寫作與上傳到github去</p>
 <h3 id="安裝Hexo"><a href="#安裝Hexo" class="headerlink" title="安裝Hexo"></a>安裝Hexo</h3><p>首先要有安裝 git 與 nodejs (不懂得自己去理解，反正就是官網下載安裝)</p>
@@ -106,7 +106,7 @@
 <p>我沒有自己的服務器，所以我希望直接放在github上<br><br>hexo已經幫你做好上傳git的簡當方式。</p>
 <p>首先安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
 <p>之後打開<strong>_config.yml</strong>設定檔，增加或修改以下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repository: https://github.com/你的帳號/你的帳號.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
-<p>好了之後我們佈署到github<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<p>好了之後我們佈署到Github<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
 <p>太棒了!</p>
 <p>你可以到 <strong>你的帳號.github.io</strong> 這裡去看你的部落格了!!</p>
 <p>Hexo 功能與詳細設定，<a href="https://hexo.io/zh-tw/" target="_blank" rel="external">官網有很詳細的說明</a></p>
@@ -114,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="ciqx6id2y000130yf981rk2a9" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="ciqx71rsx0000z0yfsgf9l478" class="article-share-link">Share</a>
       
       
     </footer>
@@ -159,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/hello-world/" data-id="ciqx6id2i000030yf0mxub4za" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/hello-world/" data-id="ciqx71rsx0001z0yfy7n6npxp" class="article-share-link">Share</a>
       
       
     </footer>
