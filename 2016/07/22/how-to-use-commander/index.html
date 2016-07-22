@@ -3,14 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Cain Play!!</title>
+  <title>如何利用Commander建立自己的Node命令 | Cain Play!!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cain Play!!">
-<meta property="og:url" content="https://cainmaila.github.io/index.html">
+  <meta name="description" content="commander模組可以製作自己的nodejs命令，類似grunt bower的全域指令服務
+新增一個npm專案如果要上傳至npm服務，方便起見可以先開一個github專案，方便之後npm publish好了之後clone下來，初始化專案1npm init
+建構命令安裝 commander
+1npm i commander --save
+範例
+12345678910111213141516171">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何利用Commander建立自己的Node命令">
+<meta property="og:url" content="https://cainmaila.github.io/2016/07/22/how-to-use-commander/index.html">
 <meta property="og:site_name" content="Cain Play!!">
+<meta property="og:description" content="commander模組可以製作自己的nodejs命令，類似grunt bower的全域指令服務
+新增一個npm專案如果要上傳至npm服務，方便起見可以先開一個github專案，方便之後npm publish好了之後clone下來，初始化專案1npm init
+建構命令安裝 commander
+1npm i commander --save
+範例
+12345678910111213141516171">
+<meta property="og:updated_time" content="2016-07-22T05:17:05.030Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cain Play!!">
+<meta name="twitter:title" content="如何利用Commander建立自己的Node命令">
+<meta name="twitter:description" content="commander模組可以製作自己的nodejs命令，類似grunt bower的全域指令服務
+新增一個npm專案如果要上傳至npm服務，方便起見可以先開一個github專案，方便之後npm publish好了之後clone下來，初始化專案1npm init
+建構命令安裝 commander
+1npm i commander --save
+範例
+12345678910111213141516171">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play!!" type="application/atom+xml">
   
@@ -63,9 +82,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-how-to-use-commander" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-how-to-use-commander" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/07/22/how-to-use-commander/" class="article-date">
   <time datetime="2016-07-22T05:09:31.000Z" itemprop="datePublished">2016-07-22</time>
@@ -78,8 +95,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/22/how-to-use-commander/">如何利用Commander建立自己的Node命令</a>
+    <h1 class="article-title" itemprop="name">
+      如何利用Commander建立自己的Node命令
     </h1>
   
 
@@ -113,69 +130,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-How-to-build-hexo-to-github" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/22/How-to-build-hexo-to-github/" class="article-date">
-  <time datetime="2016-07-22T02:00:09.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/22/How-to-build-hexo-to-github/">利用Github建立自己的部落格</a>
-    </h1>
+    <a href="/2016/07/22/How-to-build-hexo-to-github/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">利用Github建立自己的部落格</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>趁著還沒忘記趕快寫來，如何用Github上面的空間建立自己的部落格。</p>
-<p>小弟之前是使用Google的部落格，本來是覺得其他間部落格平台自由度已經算是很高的，加上還有Google這個老爸，所以對他得信任度也一直很高。<br><br>不過說真的，寫久了之後，還是多少有些不方便，最近因為工作的關係一直在寫markdown文件，說真的寫md真的很方便，後來我一直嘗試在找在Google上直接用md語法寫部落格的方法，雖然有找到一些平台但是因為還是得同步到google，終究還是不太方便，最終我希望找個可以信任，免費空間，自由度高，最重要的是，我希望可以直接用markdown語法來寫。</p>
-<p>廢話不過說，先來解釋一下Github上架站這是怎麼回事。<br><br>實際上Github上是可以設置自己的靜態網頁的，不過有一定的規範要依循<br><br>首先建立一個新的專案，這個專案的名子一定得叫 <strong>你的帳號.github.io</strong>，別問我為什麼，這是規定XD，比方我的帳號是cainmaila，所以我就必須建立一個<strong>cainmaila.github.io</strong><br><br>建立完成後，你可以嘗試做一個index.html放在裡面。然後你可以到瀏覽器去看看<strong>cainmaila.github.io</strong>這個網址，應該就會出現你的首頁。</p>
-<p>聰明的你看到這裡，應該就可以知道，這個空間你可以放置自己靜態網站，Github允許你放置html,image,css,js….</p>
-<p>到這裡，空間的問題解決了，再來是用markdown寫作的問題<br><br>這部分選擇性很多，總之就是找到一個寫markdown幫你產生html的公具，我最後選擇了老牌子的<strong>Hexo</strong>，有什麼功能先不多說，之後可以去<a href="https://hexo.io/zh-tw/" target="_blank" rel="external">Hexo官網看一下</a></p>
-<p>這裡直接說明怎麼安裝，架設，寫作與上傳到github去</p>
-<h3 id="安裝Hexo"><a href="#安裝Hexo" class="headerlink" title="安裝Hexo"></a>安裝Hexo</h3><p>首先要有安裝 git 與 nodejs (不懂得自己去理解，反正就是官網下載安裝)</p>
-<p>安裝Hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g</div></pre></td></tr></table></figure></p>
-<p>好了之後，你自己開個資料夾，進去後建構一個Hexo專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init</div></pre></td></tr></table></figure></p>
-<p>你會看到<strong>source/_posts</strong>資料夾中的會有一個hello-world.md，之後你建立的md檔案都會放在這</p>
-<p>首先自己嘗試建立一個文章<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new &quot;my first title&quot;</div></pre></td></tr></table></figure></p>
-<p>意思是建立一篇文章，標題是my first title，你會看到資料夾中新增了一個md檔案</p>
-<p>再來是把md檔編譯成靜態的html<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo generate</div></pre></td></tr></table></figure></p>
-<p>這時候public資料夾裡，應該出現你的靜態網站了。<br><br>這時候聰明的你應該知道，如果你自己有網站空間，也可以把這包放在你的雲端空間</p>
-<p>我們試著啟動服務器預覽他<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo server</div></pre></td></tr></table></figure></p>
-<p>你可以打開(localhost:4000)[localhost:4000]這個網址，可以看到你的網站。<br><br>如果你有自己的主機，當然可以直接架設上你的主機，不喜歡預設的4000 port可以用以下方式啟動<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo server -p 80</div></pre></td></tr></table></figure></p>
-<p>我沒有自己的服務器，所以我希望直接放在github上<br><br>hexo已經幫你做好上傳git的簡當方式。</p>
-<p>首先安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
-<p>之後打開<strong>_config.yml</strong>設定檔，增加或修改以下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repository: https://github.com/你的帳號/你的帳號.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
-<p>好了之後我們佈署到Github<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
-<p>太棒了!</p>
-<p>你可以到 <strong>你的帳號.github.io</strong> 這裡去看你的部落格了!!</p>
-<p>Hexo 功能與詳細設定，<a href="https://hexo.io/zh-tw/" target="_blank" rel="external">官網有很詳細的說明</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="ciqxaify100006cyfocd3zk19" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
 
 </section>
         
