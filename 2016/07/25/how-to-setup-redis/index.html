@@ -3,27 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>如何在Hexo預設模板增加comments的Widget | Cain Play!!</title>
+  <title>nodejs使用redis緩存key值 | Cain Play!!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。
-網友上推薦直接掛上https://disqus.com/的功能，這也是hexo預設的comments widget，這裡做一下備忘
-
-首先到https://disqus.com/註冊">
+  <meta name="description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
+但是有時候專案實在不大，有時還是會偷偷拿來用
+關於redis使用，這裡做一下備忘順便給初學者參考。
+安裝Linux1234wget http://download.redis.io/re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何在Hexo預設模板增加comments的Widget">
-<meta property="og:url" content="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/index.html">
+<meta property="og:title" content="nodejs使用redis緩存key值">
+<meta property="og:url" content="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/index.html">
 <meta property="og:site_name" content="Cain Play!!">
-<meta property="og:description" content="上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。
-網友上推薦直接掛上https://disqus.com/的功能，這也是hexo預設的comments widget，這裡做一下備忘
-
-首先到https://disqus.com/註冊">
-<meta property="og:updated_time" content="2016-07-25T05:15:15.146Z">
+<meta property="og:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
+但是有時候專案實在不大，有時還是會偷偷拿來用
+關於redis使用，這裡做一下備忘順便給初學者參考。
+安裝Linux1234wget http://download.redis.io/re">
+<meta property="og:updated_time" content="2016-07-25T11:50:13.996Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何在Hexo預設模板增加comments的Widget">
-<meta name="twitter:description" content="上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。
-網友上推薦直接掛上https://disqus.com/的功能，這也是hexo預設的comments widget，這裡做一下備忘
-
-首先到https://disqus.com/註冊">
+<meta name="twitter:title" content="nodejs使用redis緩存key值">
+<meta name="twitter:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
+但是有時候專案實在不大，有時還是會偷偷拿來用
+關於redis使用，這裡做一下備忘順便給初學者參考。
+安裝Linux1234wget http://download.redis.io/re">
 <link rel="publisher" href="116082516190771700000">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play!!" type="application/atom+xml">
@@ -90,10 +90,10 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
-  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
+    <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
+  <time datetime="2016-07-25T11:09:46.000Z" itemprop="datePublished">2016-07-25</time>
 </a>
     
   </div>
@@ -104,7 +104,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      如何在Hexo預設模板增加comments的Widget
+      nodejs使用redis緩存key值
     </h1>
   
 
@@ -112,25 +112,29 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。</p>
-<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這也是hexo預設的comments widget，這裡做一下備忘</p>
-<ol>
-<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
-<li>在 根目錄下的 <strong>_config.yml</strong> 中增加<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
-<p>另外disqus widget的詳細設定，在你註冊disqus後，可以到官網調整</p>
+        <p>Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。</p>
+<p><del>但是有時候專案實在不大，有時還是會偷偷拿來用</del></p>
+<p>關於redis使用，這裡做一下備忘順便給初學者參考。</p>
+<h4 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h4><p>Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-3.2.1.tar.gz</div><div class="line">tar xzf redis-3.2.1.tar.gz</div><div class="line">cd redis-3.2.1</div><div class="line">make</div></pre></td></tr></table></figure></p>
+<p>Windows<br><a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="external">到這裡來下載安裝</a></p>
+<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>執行安裝目錄下的 redis-server<br><br>window 版本可能得指定conf檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server redis.windows.conf</div></pre></td></tr></table></figure></p>
+<p>這個.conf是 redis 的一些參數設定</p>
+<h4 id="nodejs使用"><a href="#nodejs使用" class="headerlink" title="nodejs使用"></a>nodejs使用</h4><p>安裝模組<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install redis</div></pre></td></tr></table></figure></p>
+<p>連線<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var redis = require(&apos;redis&apos;);</div><div class="line">//預設連線本機的6379 port，也可以指定 redis.createClient(port, host);</div><div class="line">var client = redis.createClient();</div><div class="line">client.on(&apos;connect&apos;, function() &#123;</div><div class="line">    console.log(&apos;connected&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>新增key並查詢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.set(&apos;keyName&apos;, &apos;myName&apos;); //新增</div><div class="line">client.get(&apos;keyName&apos;, function(err, reply) &#123; //查詢</div><div class="line">    console.log(reply); //輸出 myName</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>如果沒有key就會是 null</p>
+<p>存的key值，都會變轉成字串</p>
+<p><a href="https://www.sitepoint.com/using-redis-node-js/" target="_blank" rel="external">其他請自行參閱</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cir1y3s7r0004v0yfrq88g1xw" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cir1y3s790001v0yfrqoyrn3n" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis-nodejs/">redis, nodejs</a></li></ul>
 
     </footer>
   </div>
@@ -138,19 +142,10 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
-    <a href="/2016/07/25/how-to-setup-redis/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          nodejs使用redis緩存key值
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/07/22/how-to-use-commander/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/07/25/hexo-add-disqus-widget/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">如何利用Commander建立自己的Node命令</div>
+      <div class="article-nav-title">如何在Hexo預設模板增加comments的Widget</div>
     </a>
   
 </nav>
@@ -251,7 +246,7 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'cainmaila';
   
-  var disqus_url = 'https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/';
+  var disqus_url = 'https://cainmaila.github.io/2016/07/25/how-to-setup-redis/';
   
   (function(){
     var dsq = document.createElement('script');

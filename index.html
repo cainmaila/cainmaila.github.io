@@ -79,6 +79,59 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
+  <time datetime="2016-07-25T11:09:46.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/25/how-to-setup-redis/">nodejs使用redis緩存key值</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。</p>
+<p><del>但是有時候專案實在不大，有時還是會偷偷拿來用</del></p>
+<p>關於redis使用，這裡做一下備忘順便給初學者參考。</p>
+<h4 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h4><p>Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-3.2.1.tar.gz</div><div class="line">tar xzf redis-3.2.1.tar.gz</div><div class="line">cd redis-3.2.1</div><div class="line">make</div></pre></td></tr></table></figure></p>
+<p>Windows<br><a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="external">到這裡來下載安裝</a></p>
+<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>執行安裝目錄下的 redis-server<br><br>window 版本可能得指定conf檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server redis.windows.conf</div></pre></td></tr></table></figure></p>
+<p>這個.conf是 redis 的一些參數設定</p>
+<h4 id="nodejs使用"><a href="#nodejs使用" class="headerlink" title="nodejs使用"></a>nodejs使用</h4><p>安裝模組<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install redis</div></pre></td></tr></table></figure></p>
+<p>連線<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var redis = require(&apos;redis&apos;);</div><div class="line">//預設連線本機的6379 port，也可以指定 redis.createClient(port, host);</div><div class="line">var client = redis.createClient();</div><div class="line">client.on(&apos;connect&apos;, function() &#123;</div><div class="line">    console.log(&apos;connected&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>新增key並查詢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.set(&apos;keyName&apos;, &apos;myName&apos;); //新增</div><div class="line">client.get(&apos;keyName&apos;, function(err, reply) &#123; //查詢</div><div class="line">    console.log(reply); //輸出 myName</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>如果沒有key就會是 null</p>
+<p>存的key值，都會變轉成字串</p>
+<p><a href="https://www.sitepoint.com/using-redis-node-js/" target="_blank" rel="external">其他請自行參閱</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cir1y3s790001v0yfrqoyrn3n" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis-nodejs/">redis, nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
@@ -114,7 +167,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cir1sowqo0003ncyfxuowcao5" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cir1y3s7r0004v0yfrq88g1xw" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -168,7 +221,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir1sowpj0000ncyfk9h08zgt" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir1y3s7k0003v0yfio4eilrk" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -234,7 +287,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir1sowqa0001ncyf85u9qp90" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir1y3s6b0000v0yfx30jhuif" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -260,7 +313,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis-nodejs/">redis, nodejs</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -270,7 +323,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a>
+      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/redis-nodejs/" style="font-size: 10px;">redis, nodejs</a>
     </div>
   </div>
 
@@ -279,7 +332,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -290,6 +343,10 @@ ga('send', 'pageview');
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/07/25/how-to-setup-redis/">nodejs使用redis緩存key值</a>
+          </li>
         
           <li>
             <a href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
