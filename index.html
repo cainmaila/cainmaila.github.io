@@ -68,7 +68,7 @@ ga('send', 'pageview');
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
@@ -78,6 +78,61 @@ ga('send', 'pageview');
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
+  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget。</p>
+<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這裡分享一下流程</p>
+<ol>
+<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
+<li><p>在 根目錄下的 <strong>_config.yml</strong> 中增加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
+</li>
+<li><p>在 <strong>themes/landscape/layout/_widget/</strong> 中增加 <strong>recent_comment.ejs</strong> 這個檔案，內容如下 (別全copy，記得改你的ID!!)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;recentcomments&quot; class=&quot;dsq-widget&quot;&gt;</div><div class="line">    &lt;p class=&quot;asidetitle&quot;&gt;Recent Comments&lt;/p&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; src=&quot;http://你的ID.disqus.com/recent_comments_widget.js?num_items=10&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=100&amp;hide_mods=0&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>新增 <strong>themes/landscape/_partial</strong> 這個資料夾，並在裡面新增這個檔案　<strong>comment.ejs</strong> 內容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;% if (page.comments)&#123; %&gt;</div><div class="line">&lt;section id=&quot;comment&quot;&gt;</div><div class="line">  &lt;h1 class=&quot;title&quot;&gt;&lt;%= __(&apos;comment&apos;) %&gt;&lt;/h1&gt;</div><div class="line"></div><div class="line">  &lt;% if (theme.comment_provider == &quot;facebook&quot;) &#123;</div><div class="line">      if (theme.facebook) &#123; %&gt;</div><div class="line">      &lt;%- partial(&apos;_partial/facebook_comment&apos;, &#123;fbConfig: theme.facebook&#125;) %&gt;</div><div class="line">      &lt;% &#125; %&gt;</div><div class="line">  &lt;% &#125; else if(config.disqus_shortname) &#123; %&gt;</div><div class="line">  &lt;div id=&quot;disqus_thread&quot;&gt;</div><div class="line">    &lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;//disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">  &lt;% &#125; %&gt;</div><div class="line">&lt;/section&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cir1hvomf0000zwyf1gomygqv" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-how-to-use-commander" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -119,9 +174,9 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir1gg1r10001icyf0x8vq847" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir1hefz00000v4yfb19zu2qh" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -185,11 +240,13 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir1gg1qu0000icyfo0fbxtxr" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir1hi5re0000dsyfyiw392ud" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
     </footer>
   </div>
   
@@ -207,9 +264,9 @@ ga('send', 'pageview');
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Labels</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -219,16 +276,16 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a>
+      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -236,9 +293,13 @@ ga('send', 'pageview');
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
+          </li>
         
           <li>
             <a href="/2016/07/22/how-to-use-commander/">如何利用Commander建立自己的Node命令</a>
