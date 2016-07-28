@@ -35,7 +35,6 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
-
 </head>
 
 <body>
@@ -78,6 +77,115 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-how-to-use-cordova" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/28/how-to-use-cordova/" class="article-date">
+  <time datetime="2016-07-28T04:45:01.000Z" itemprop="datePublished">2016-07-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Cordova是一個開放源碼移動開發框架。它允許您使用標準的web技術如HTML5、CSS3和JavaScript進行跨平臺開發。</p>
+<p>前身是Phonegap，這樣說可能很多人心裡有底了。或許有些人會說，用這種方式包裝WedView成為APP效能不是很差嗎?</p>
+<p>實際上以目前手機的硬體與效能，已經跟以前不一樣了，甚至有些幾乎接近個人電腦(而且將來還可能會更好)，加上code好好寫的話，性能也不至於到不能看的程度(實際上很多性能不好的APP都是因為code沒有好好寫，比方沒有好好的使用硬體加速，或是記憶體與事件流程沒有好好管理..)</p>
+<p>雖說性能依然不能跟原生做比較，但是由於開發成本差異實在太大了，某些情況下直接使用Cordova包裝成APP說真的也可以是一種選擇。</p>
+<p>如果你已經是一個Web開發者，Cordova真的可以幫你省下非常說的時間。</p>
+<p>本篇針對在Windows下第一次使用Cordova輸出一個Android APP做說明。(在這之前你可能需要先學會如何使用nodejs工具命令)。Cordova使用上真的相當容易，比較麻煩的就是安裝流程繁瑣，最近因為工作需要，又再把環境建立起來，順便寫下來給需要的人參考。</p>
+<h4 id="安裝Crodova"><a href="#安裝Crodova" class="headerlink" title="安裝Crodova"></a>安裝Crodova</h4><p>安裝Cordova全域命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i -g cordova</div></pre></td></tr></table></figure></p>
+<h4 id="安裝JAVA開發工具箱（JDK）"><a href="#安裝JAVA開發工具箱（JDK）" class="headerlink" title="安裝JAVA開發工具箱（JDK）"></a>安裝JAVA開發工具箱（JDK）</h4><p>以下針對Android，都是繁瑣的步驟，按照步驟過了這裡就可以快樂開發了XD</p>
+<p>首先安裝jdk</p>
+<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">Java SE Development Kit 8 Downloads</a></p>
+<p>下載windows版本，安裝後設定下面這些系統變數，<a href="http://jdev.tw/blog/4678/windows-10-environment-variable-editing" target="_blank" rel="external">不會的看這裡</a></p>
+<ul>
+<li><strong>PATH 加上你剛剛的jdk路徑</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Program Files\Java\jdk1.8.0_101\bin</div></pre></td></tr></table></figure>
+<p>這是我的別照抄了，就是你剛剛裝的路徑，進去bin資料夾</p>
+<ul>
+<li><strong>增加 JAVA_HOME 變數</strong></li>
+</ul>
+<p>新增一個變數叫做<strong>JAVA_HOME</strong>設為jdk路徑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Program Files\Java\jdk1.8.0_101</div></pre></td></tr></table></figure></p>
+<p>這是我的別照抄了，就是你剛剛裝的路徑</p>
+<h4 id="安裝Android-SDK"><a href="#安裝Android-SDK" class="headerlink" title="安裝Android SDK"></a>安裝Android SDK</h4><p>這步驟下載花很多時間，忍耐一下…</p>
+<ul>
+<li><strong>首先下載安裝Android sdk tools</strong></li>
+</ul>
+<p><a href="https://developer.android.com/studio/releases/sdk-tools.html" target="_blank" rel="external">SDK Tools Release Notes</a></p>
+<p>這個工具會幫你管理Android sdk，之後SDK用它來幫你下載。</p>
+<ul>
+<li><strong>加上Android sdk tools系統變數</strong></li>
+</ul>
+<p>Path 加上Android sdk tools的路徑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\Users\user\AppData\Local\Android\Sdk\tools</div><div class="line">C:\Users\user\AppData\Local\Android\Sdk\platform-tools</div></pre></td></tr></table></figure>
+<p>一樣別照抄，我不知道你的tools裝在哪裡，有兩個路徑，別漏掉了。</p>
+<ul>
+<li><strong>新增一個 ANDROID_HOME 變數</strong></li>
+</ul>
+<p>新增 ANDROID_HOME 變數<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Users\user\AppData\Local\Android\Sdk</div></pre></td></tr></table></figure></p>
+<p>一樣別照抄，設為你的tools路徑，很多人都少了這個…</p>
+<p>到這裡後，安裝全都完成了，Android sdk tools預設幫你安裝最新的SDK，不過Cordova可能不會用最新的，你可以再使用Android sdk tools安裝需要的sdk版本</p>
+<p>終於可以開始輸出第一個專案試試XD</p>
+<h4 id="建立一個Android專案"><a href="#建立一個Android專案" class="headerlink" title="建立一個Android專案"></a>建立一個Android專案</h4><ul>
+<li><strong>建立一個專案，以下針對Android</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova create hello com.myName.hello HelloWorld</div></pre></td></tr></table></figure>
+<p>說明一下上面的內容<br><br><strong>cordova create hello</strong> 建立一個專案資料夾叫做hello<br><br><strong>com.myName.hello</strong> 這是一個命名空間，在手機上每個app都會有自己的命名空間，一般而言會像網址反向。<br><br><strong>HelloWorld</strong> 你的APP名稱</p>
+<ul>
+<li><strong>新增Android平台</strong></li>
+</ul>
+<p>剛剛的動作，你應該已經產生了一個hello專案資料夾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd hello</div><div class="line">cordova platform add android</div></pre></td></tr></table></figure>
+<p>建立一個android平台的專案包(另外當然還有ios，win8….這裡不多說明)</p>
+<ul>
+<li><strong>打包app</strong></li>
+</ul>
+<p>我們先打包一個空專案</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova build</div></pre></td></tr></table></figure>
+<p>耐心等等待一下，如果沒有錯誤，那恭喜你，你已經建立好開發環境了</p>
+<p>如果遇到錯誤，一班都是以下問題</p>
+<ol>
+<li>path等的一些系統變數，忘了設定，或是設錯</li>
+<li>Android sdk tools裝的SDK版本不對，這個看錯誤訊息應該可以知道他要什麼版本 (platform android target 問題)</li>
+</ol>
+<p>你可以把輸出的apk裝在你的手機上看看，應該會看到一個cordova首頁的畫面。</p>
+<img src="/2016/07/28/how-to-use-cordova/logo.png" alt="logo.png" title="">
+<p>聰明的你應該知道其實就是打包 hello\www 裡面的內容</p>
+<p>另外每次輸出都要安裝很麻煩，你可以打開手機的偵錯模式，然後接上你的電腦，之後只要</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova run</div></pre></td></tr></table></figure>
+<p>就可以直接裝到你的手機上</p>
+<p><a href="https://cordova.apache.org/docs/zh-tw/6.x/guide/cli/index.html" target="_blank" rel="external">如果還有不清楚可以去參考官網</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="cir5xrs5r0006t8yfyd8pcsmo" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
@@ -117,12 +225,61 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cir2rgmap0003k0yfoqd7ndo2" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cir5xrs5k0004t8yf6uwqxcsz" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
+  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。</p>
+<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這也是hexo預設的comments widget，這裡做一下備忘</p>
+<ol>
+<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
+<li>在 根目錄下的 <strong>_config.yml</strong> 中增加<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
+<p>另外disqus widget的詳細設定，在你註冊disqus後，可以到官網調整</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cir5xrs590001t8yfd2x8eof0" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
 
     </footer>
   </div>
@@ -166,7 +323,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="cir2rsoia0000i0yfbk681pt0" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="cir5xrs5i0003t8yf03ogdkit" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -220,7 +377,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir2rgmb40004k0yfedz30kto" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cir5xrs5z0008t8yfz3ye6pld" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -286,7 +443,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir2rgma90000k0yf9kgnzx50" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cir5xrs510000t8yffw3o9bf9" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -312,7 +469,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -322,7 +479,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a>
     </div>
   </div>
 
@@ -331,7 +488,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -344,7 +501,15 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a>
+          </li>
+        
+          <li>
             <a href="/2016/07/25/how-to-setup-redis/">nodejs使用redis緩存key值</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
           </li>
         
           <li>
@@ -353,10 +518,6 @@ ga('send', 'pageview');
         
           <li>
             <a href="/2016/07/22/how-to-use-commander/">如何利用Commander建立自己的Node命令</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/22/How-to-build-hexo-to-github/">利用Github建立自己的部落格</a>
           </li>
         
       </ul>
