@@ -3,14 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archieven: 2016/8 | Cain Play It</title>
+  <title>讓你更優雅的使用Webpack - webpack-dashboard | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cain Play It">
-<meta property="og:url" content="https://cainmaila.github.io/archives/2016/08/index.html">
+  <meta name="description" content="看膩了webpack的建構輸出嗎?可以考慮試試加上webpack-dashboard讓你的wedpack輸出更優雅!如果你有在用webpack-dev-servery作為測試服務的話，你應該會更喜歡它!
+原來的webpack輸出
+加上webpack-dashboard後的輸出
+是不是感覺清楚清新很多!
+使用方式首先安裝1npm install webpack-dashboard --save-de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="讓你更優雅的使用Webpack - webpack-dashboard">
+<meta property="og:url" content="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/index.html">
 <meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="看膩了webpack的建構輸出嗎?可以考慮試試加上webpack-dashboard讓你的wedpack輸出更優雅!如果你有在用webpack-dev-servery作為測試服務的話，你應該會更喜歡它!
+原來的webpack輸出
+加上webpack-dashboard後的輸出
+是不是感覺清楚清新很多!
+使用方式首先安裝1npm install webpack-dashboard --save-de">
+<meta property="og:image" content="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/qa1.png">
+<meta property="og:image" content="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/qa2.png">
+<meta property="og:updated_time" content="2016-09-08T07:36:41.049Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cain Play It">
+<meta name="twitter:title" content="讓你更優雅的使用Webpack - webpack-dashboard">
+<meta name="twitter:description" content="看膩了webpack的建構輸出嗎?可以考慮試試加上webpack-dashboard讓你的wedpack輸出更優雅!如果你有在用webpack-dev-servery作為測試服務的話，你應該會更喜歡它!
+原來的webpack輸出
+加上webpack-dashboard後的輸出
+是不是感覺清楚清新很多!
+使用方式首先安裝1npm install webpack-dashboard --save-de">
+<meta name="twitter:image" content="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/qa1.png">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -75,40 +94,71 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/08/05/use-leedian-jsdoc/" class="archive-article-date">
-  <time datetime="2016-08-05T11:16:30.000Z" itemprop="datePublished">8月 5</time>
+        <section id="main"><article id="post-use-webpack-dashboard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/07/use-webpack-dashboard/" class="article-date">
+  <time datetime="2016-09-07T03:52:30.000Z" itemprop="datePublished">2016-09-07</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/05/use-leedian-jsdoc/">利用Jsdoc幫Javascript產出漂亮的文檔</a>
+    <h1 class="article-title" itemprop="name">
+      讓你更優雅的使用Webpack - webpack-dashboard
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>看膩了webpack的建構輸出嗎?可以考慮試試加上<a href="https://github.com/FormidableLabs/webpack-dashboard" target="_blank" rel="external"><strong>webpack-dashboard</strong></a>讓你的wedpack輸出更優雅!<br><br>如果你有在用webpack-dev-servery作為測試服務的話，你應該會更喜歡它!</p>
+<p><strong>原來的webpack輸出</strong><br><img src="/2016/09/07/use-webpack-dashboard/qa1.png" alt="qa1.png" title=""></p>
+<p><strong>加上webpack-dashboard後的輸出</strong><br><img src="/2016/09/07/use-webpack-dashboard/qa2.png" alt="qa2.png" title=""></p>
+<p>是不是感覺清楚清新很多!</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>首先安裝<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install webpack-dashboard --save-dev</div></pre></td></tr></table></figure></p>
+<p>然後在你的<strong>webpack.config.js</strong>中加上<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Dashboard = <span class="built_in">require</span>(<span class="string">'webpack-dashboard'</span>);</div><div class="line"><span class="keyword">var</span> DashboardPlugin = <span class="built_in">require</span>(<span class="string">'webpack-dashboard/plugin'</span>);</div><div class="line"><span class="keyword">var</span> dashboard = <span class="keyword">new</span> Dashboard();</div></pre></td></tr></table></figure></p>
+<p>最後添加這個<strong>plugins</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plugins: [</div><div class="line">  <span class="keyword">new</span> DashboardPlugin(dashboard.setData)</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>試著啟動你的webpack-dev-server，再加上<strong>quiet</strong>參數(主要是去除多餘的輸出)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">webpack-dev-server --quiet</div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/FormidableLabs/webpack-dashboard" target="_blank" rel="external"><strong>webpack-dashboard</strong></a>目前還處於初期階段，有興趣的人可以試著玩看看。</p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="cisu0l1cl000ccwyfr1a48k0q" class="article-share-link">Delen</a>
+      
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Commentaren</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/08/05/use-leedian-jsdoc/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ouder</strong>
+      <div class="article-nav-title">利用Jsdoc幫Javascript產出漂亮的文檔</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
         
           <aside id="sidebar">
@@ -200,11 +250,13 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'cainmaila';
   
+  var disqus_url = 'https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
