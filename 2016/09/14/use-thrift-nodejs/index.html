@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>基於Thrift的Node.js微服物通訊 | Cain Play It</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近公司開始要把各服務器的通訊方法改為Thrift，開始試著利用Thrift實作Node.js的通訊架構。Apache Thrift 是 Facebook 實現的一種高效的、支持多種編程語言的遠程服務調用的框架，傳輸數據採用二進制格式，相對 XML 和 JSON 體積更小，對於高並發、大數據量和多語言的環境更有優勢。講白了就是資料傳輸速度比傳統的Rest架構快非常多。可參考這篇Microservi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基於Thrift的Node.js微服物通訊">
+<meta property="og:url" content="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/index.html">
+<meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="最近公司開始要把各服務器的通訊方法改為Thrift，開始試著利用Thrift實作Node.js的通訊架構。Apache Thrift 是 Facebook 實現的一種高效的、支持多種編程語言的遠程服務調用的框架，傳輸數據採用二進制格式，相對 XML 和 JSON 體積更小，對於高並發、大數據量和多語言的環境更有優勢。講白了就是資料傳輸速度比傳統的Rest架構快非常多。可參考這篇Microservi">
+<meta property="og:image" content="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/cc.png">
+<meta property="og:updated_time" content="2016-09-14T10:12:30.654Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基於Thrift的Node.js微服物通訊">
+<meta name="twitter:description" content="最近公司開始要把各服務器的通訊方法改為Thrift，開始試著利用Thrift實作Node.js的通訊架構。Apache Thrift 是 Facebook 實現的一種高效的、支持多種編程語言的遠程服務調用的框架，傳輸數據採用二進制格式，相對 XML 和 JSON 體積更小，對於高並發、大數據量和多語言的環境更有優勢。講白了就是資料傳輸速度比傳統的Rest架構快非常多。可參考這篇Microservi">
+<meta name="twitter:image" content="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/cc.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-81275549-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cain Play It</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的碼農備忘錄</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-use-thrift-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/14/use-thrift-nodejs/" class="article-date">
+  <time datetime="2016-09-14T08:16:02.000Z" itemprop="datePublished">2016-09-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基於Thrift的Node.js微服物通訊
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近公司開始要把各服務器的通訊方法改為Thrift，開始試著利用Thrift實作Node.js的通訊架構。<br><br><a href="https://thrift.apache.org" target="_blank" rel="external">Apache Thrift</a> 是 Facebook 實現的一種高效的、支持多種編程語言的遠程服務調用的框架，傳輸數據採用二進制格式，相對 XML 和 JSON 體積更小，對於高並發、大數據量和多語言的環境更有優勢。<br><br>講白了就是資料傳輸速度比傳統的Rest架構快非常多。可參考這篇<a href="http://nordicapis.com/microservice-showdown-rest-vs-soap-vs-apache-thrift-and-why-it-matters/" target="_blank" rel="external">Microservice Showdown – REST vs SOAP vs Apache Thrift (And Why It Matters)</a><br><br>這玩意很單純的利用tcp去傳輸資料，當然使省去很多瑣碎的多餘資料，省資源，效率更高，很適合用在整合散部各處的node.js微服物器。<br><br>但是Thrift也不是沒有缺點，省去了很多瑣碎的手續，相對資料的安全性就會降低，首先一大問題就是tcp連線可能隨時會中斷，所以要你要想要作長連線，最好還是乖乖地使用標準的socket協定，基本上還是建議使用在網路比較穩定的區網內服務通訊。<br><br>如果你有一個大型服務，需要收集(或請求)分散各處的微型服務，而這些服務都在同一個主機或是穩定的網路區域，就很適合利用Thrift作為通訊架構。</p>
+<img src="/2016/09/14/use-thrift-nodejs/cc.png" alt="cc.png" title="">
+<p>以下實作利用Thrift再在Node.js服務器中通訊的方法</p>
+<ol>
+<li><p>首先建立一個nodejs專案，然後安裝thrift掛件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i thrift</div></pre></td></tr></table></figure>
+</li>
+<li><p>建立一個介面定義檔</p>
+</li>
+</ol>
+<p>Thrift其實最棒的地方就是<a href="https://thrift.apache.org/lib/" target="_blank" rel="external">支援很多語言</a>，你只要寫一個.thrift定義檔，就可以幫你輸出各種語言的介面函示庫，c、java、php、ruby、python、js等等主流語言。</p>
+<p>先做一個基本的定義檔 demoApi.thrift<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 介面定義檔</div><div class="line"> */</div><div class="line"></div><div class="line">/* 各語言命名空間 這邊不用改*/</div><div class="line">namespace cpp demoApi</div><div class="line">namespace d demoApi</div><div class="line">namespace java demoApi</div><div class="line">namespace php demoApi</div><div class="line">namespace perl demoApi</div><div class="line">namespace haxe demoApi</div><div class="line"></div><div class="line">/* 定義呼叫的方法介面與參數 */</div><div class="line">service DemoApi &#123;</div><div class="line">	void apiCall() /* 定義一個apiCall方法 */</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>這裡定義一個 DemoApi 的服務，這個服務裡面有一個apiCall方法，apiCall沒有接受參數，也沒有回傳值，所以前面加個viod。</p>
+<ol>
+<li>編譯介面檔</li>
+</ol>
+<p>demoApi.thrift 只是一個，定義文件，必須透過編譯器再編譯成各種語言的介面函示庫。</p>
+<p><a href="https://thrift.apache.org/download" target="_blank" rel="external">首先下載編譯器</a></p>
+<p>下載後編譯你的demoApi.thrift定義檔，語法如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thrift --gen &lt;language&gt; &lt;Thrift filename&gt;</div></pre></td></tr></table></figure></p>
+<p>以下針對node.js作編譯<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hrift -r --gen js:node demoApi.thrift</div></pre></td></tr></table></figure></p>
+<p>編譯完成後產生介面函示庫gen-nodejs資料夾，這個就是node.js的介面函示庫。目前裡面應該會有兩隻檔案<br><strong>DemoApi.js</strong> 方法介面的定義<br><strong>demoApi_types.js</strong> 結構的定義(目前我們沒有定義任何結構)</p>
+<p>4.開始撰寫nodejs各通訊端點</p>
+<p>介面函示庫好了後就可以開始使用了，首先寫Server端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> thrift = <span class="built_in">require</span>(<span class="string">"thrift"</span>);</div><div class="line"><span class="comment">/*</span></div><div class="line"> * 匯入 thrift產生的函式庫</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> DemoApi = <span class="built_in">require</span>(<span class="string">"./gen-nodejs/DemoApi"</span>);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 定義一個 DemoApi 服務器</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> server = thrift.createServer(DemoApi, &#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 最單純的通訊，呼叫定義的apiCall方法，定義的方法請參照demo.thrift</div><div class="line">     */</div><div class="line">    apiCall: <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"apiCall()"</span>);</div><div class="line">        result(<span class="literal">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 偵聽8080 port</div><div class="line"> */</div><div class="line">server.listen(<span class="number">8080</span>);</div></pre></td></tr></table></figure></p>
+<p>再來是Client端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> thrift = <span class="built_in">require</span>(<span class="string">"thrift"</span>);</div><div class="line"><span class="comment">/*</span></div><div class="line"> * 匯入 thrift產生的函式庫</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> DemoApi = <span class="built_in">require</span>(<span class="string">"./gen-nodejs/DemoApi"</span>);</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通訊協定定義</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> transport = thrift.TBufferedTransport();</div><div class="line"><span class="keyword">var</span> protocol = thrift.TBinaryProtocol();</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 連線</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> connection = thrift.createConnection(<span class="string">"localhost"</span>, <span class="number">8080</span>, &#123;</div><div class="line">    transport: transport,</div><div class="line">    protocol: protocol</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 連線錯誤事件</div><div class="line"> */</div><div class="line">connection.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.error(err);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 打開一個DemoApi服務通訊流程</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> client = thrift.createClient(DemoApi, connection);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 最單純的通訊，呼叫定義的apiCall方法，定義的方法請參照demo.thrift</div><div class="line"> */</div><div class="line">client.apiCall(<span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'apiCall()'</span>);</div><div class="line">    connection.end(); <span class="comment">//事情都作完記得關閉連線，很重要!!!</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>好了之後你可以分別執行server與client，順利的話應該可以看到執行的console.log結果</p>
+<p>接下來我們試著傳送一些資料，目前Thrift可以定義的類型如下</p>
+<ul>
+<li>bool</li>
+<li>i8 (byte)</li>
+<li>i16(16位元整數)</li>
+<li>i32(32位元整數)</li>
+<li>i64(64位元整數)</li>
+<li>double(64位元浮點數)</li>
+<li>string(字串)</li>
+<li>binary(byte array)</li>
+</ul>
+<p>我們在定義檔demoApi.thrift上加上一個新的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">service DemoApi &#123;</div><div class="line">    void apiCall(), /* 逗號隔開 */</div><div class="line">    i32 add(1:i32 num1, 2:i32 num2)  /* 新增add這個方法 */</div></pre></td></tr></table></figure></p>
+<p><strong>add</strong>這個方法傳入兩個32位元整數，最前面的i32代表回傳的型態</p>
+<p>加上後記得再編譯一次<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hrift -r --gen js:node demoApi.thrift</div></pre></td></tr></table></figure></p>
+<p>Servre端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">apiCall: <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"apiCall()"</span>);</div><div class="line">        result(<span class="literal">null</span>);</div><div class="line">    &#125;,</div><div class="line">add: <span class="function"><span class="keyword">function</span> (<span class="params">n1, n2, result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"add("</span>, n1, <span class="string">","</span>, n2, <span class="string">")"</span>);</div><div class="line">        result(<span class="literal">null</span>, n1 + n2);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>Client端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">client.add(<span class="number">1</span>, <span class="number">1</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"1+1="</span> + response);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>這個方法是把傳入的兩個數字相加後再return回去。</p>
+<p>再次執行後應該可以看到對應的結果!</p>
+<h4 id="其他資料型態與完整範例請至我的gitlab"><a href="#其他資料型態與完整範例請至我的gitlab" class="headerlink" title="其他資料型態與完整範例請至我的gitlab"></a>其他資料型態與完整範例請至我的gitlab</h4><p><a href="https://gitlab.com/cainplay/Thrift_demo" target="_blank" rel="external">https://gitlab.com/cainplay/Thrift_demo</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="cit2pziu1000ev8yfcnzvq2mm" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/09/07/use-webpack-dashboard/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">讓你更優雅的使用Webpack - webpack-dashboard</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/14/use-thrift-nodejs/">基於Thrift的Node.js微服物通訊</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/07/use-webpack-dashboard/">讓你更優雅的使用Webpack - webpack-dashboard</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/05/use-leedian-jsdoc/">利用Jsdoc幫Javascript產出漂亮的文檔</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/how-to-setup-redis/">nodejs使用redis緩存key值</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Cain Chu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'cainmaila';
+  
+  var disqus_url = 'https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
