@@ -107,7 +107,7 @@ ga('send', 'pageview');
 <p>雖說nodejs與Ceph，可以透過<a href="https://www.npmjs.com/package/rados" target="_blank" rel="external">node-rados</a>這個工具掛件，可以很簡便的通訊，但是還是得先確認兩件事。</p>
 <h4 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h4><ol>
 <li>目前<strong>librados-dev</strong>僅直接支援Linux，Windows要安裝非常麻煩(有好心人士作了Windows版本)，而且問題很多，我還是建議直接用Linux</li>
-<li>編譯的nodejs，我試過很多版本都不行，目前我使用<strong>node v0.12.9</strong>，開發的話用nvm去切換版本吧。(不然把服務坐在一個docker裡面也是一個辦法)</li>
+<li>編譯的nodejs，我試過很多版本都不行，目前我使用<strong>node v0.12.9</strong>，開發的話用nvm去切換版本吧。(不然把服務作在一個docker裡面也是一個辦法)</li>
 </ol>
 <h4 id="整個流程大致為這樣"><a href="#整個流程大致為這樣" class="headerlink" title="整個流程大致為這樣"></a>整個流程大致為這樣</h4><ol>
 <li>安裝node-gyp</li>
@@ -120,13 +120,13 @@ ga('send', 'pageview');
 <h2 id="準備Ceph定義檔"><a href="#準備Ceph定義檔" class="headerlink" title="準備Ceph定義檔"></a>準備Ceph定義檔</h2><p>ceph.conf Ceph服務器設定檔，主機位置與key檔位址</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mon host = 192.168.1.100</div><div class="line">keyring = ceph.client.admin.keyring</div></pre></td></tr></table></figure>
 <h2 id="開始使用"><a href="#開始使用" class="headerlink" title="開始使用"></a>開始使用</h2><p>上述準備好了之後就可以開始直接利用nodejs與Ceph串接</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rados = <span class="built_in">require</span>(<span class="string">'./build/Release/rados'</span>); <span class="comment">//編譯後rados函式庫位置</span></div><div class="line"></div><div class="line"><span class="comment">//開啟一個ceph服務，傳入你的ceph名稱，帳號，最後是你的設定檔位置</span></div><div class="line"><span class="keyword">var</span> cluster = <span class="keyword">new</span> rados.Rados( <span class="string">"ceph"</span>, <span class="string">"client.admin"</span>, <span class="string">"./ceph.conf"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> err = cluster.connect();</div><div class="line"><span class="keyword">if</span> (err) &#123;</div><div class="line">	<span class="comment">// 連線失敗</span></div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"Error "</span> + err);</div><div class="line">	<span class="keyword">throw</span> err;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//印出目前使用的Ceph的fsid</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"fsid : "</span> + cluster.get_fsid() );</div><div class="line"><span class="comment">//取回目前Ceph的pool列表</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"ls pools : "</span> + cluster.pool_list() );</div><div class="line"></div><div class="line"><span class="comment">//建立一個通訊流，pool name是rbd</span></div><div class="line"><span class="keyword">var</span> ioctx = <span class="keyword">new</span> rados.Ioctx(cluster, <span class="string">"rbd"</span>);</div><div class="line"></div><div class="line"><span class="comment">//同步寫入Buffer資料，資料ID為myfile</span></div><div class="line">ioctx.write_full(<span class="string">"myfile"</span>, <span class="keyword">new</span> Buffer(<span class="string">"01234567ABCDEF"</span>));</div><div class="line"></div><div class="line"><span class="comment">//取回myfile資料長度</span></div><div class="line"><span class="keyword">var</span> len =  ioctx.stat(<span class="string">"myfile"</span>).psize;</div><div class="line"></div><div class="line"><span class="comment">//同步取回myfile資料</span></div><div class="line"><span class="keyword">var</span> buf = ioctx.read(<span class="string">"myfile"</span>, len);</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rados = <span class="built_in">require</span>(<span class="string">'./build/Release/rados'</span>); <span class="comment">//編譯後rados函式庫位置</span></div><div class="line"></div><div class="line"><span class="comment">//開啟一個ceph服務，傳入你的ceph名稱，帳號，最後是你的設定檔位置</span></div><div class="line"><span class="keyword">var</span> cluster = <span class="keyword">new</span> rados.Rados( <span class="string">"ceph"</span>, <span class="string">"client.admin"</span>, <span class="string">"./ceph.conf"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> err = cluster.connect();</div><div class="line"><span class="keyword">if</span> (err) &#123;</div><div class="line">	<span class="comment">// 連線失敗</span></div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"Error "</span> + err);</div><div class="line">	<span class="keyword">throw</span> err;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//印出目前使用的Ceph的fsid</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"fsid : "</span> + cluster.get_fsid() );</div><div class="line"><span class="comment">//取回目前Ceph的pool列表</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"ls pools : "</span> + cluster.pool_list() );</div><div class="line"></div><div class="line"><span class="comment">//建立一個通訊流，pool name是rbd</span></div><div class="line"><span class="keyword">var</span> ioctx = <span class="keyword">new</span> rados.Ioctx(cluster, <span class="string">"rbd"</span>);</div><div class="line"></div><div class="line"><span class="comment">//同步寫入Buffer資料，資料ID為myfile</span></div><div class="line">ioctx.write_full(<span class="string">"myfile"</span>, <span class="keyword">new</span> Buffer(<span class="string">"01234567ABCDEF"</span>));</div><div class="line"></div><div class="line"><span class="comment">//取回myfile資料長度</span></div><div class="line"><span class="keyword">var</span> len =  ioctx.stat(<span class="string">"myfile"</span>).psize;</div><div class="line"></div><div class="line"><span class="comment">//同步取回myfile資料</span></div><div class="line"><span class="keyword">var</span> buf = ioctx.read(<span class="string">"myfile"</span>, len);</div><div class="line"></div><div class="line"><span class="comment">//關閉服務</span></div><div class="line">cluster.shutdown();</div></pre></td></tr></table></figure>
 <p>以上基本用法，詳細可以看<a href="https://github.com/ksperis/node-rados" target="_blank" rel="external">官方範例</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="citzl96ye0006p8yfv1n2meb4" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="citzo5ggs0004qoyfwil3abok" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -210,7 +210,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="citzl970a000jp8yfhsg64wxg" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="citzo5ghf000gqoyf4rphmq7v" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -259,7 +259,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="citzl9712000op8yfb02f1yln" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="citzo5ghe000eqoyfegixdust" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -318,7 +318,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="citzl970y000np8yfwntf468h" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="citzo5ghb000cqoyfvxkays7v" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -427,7 +427,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="citzl970h000lp8yfse36bqqm" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="citzo5gh5000aqoyfrvrcf7am" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -480,61 +480,12 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="citzl96yp0009p8yfkgbrpfn5" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="citzo5ggy0006qoyfkcvdkv8m" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
-  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。</p>
-<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這也是hexo預設的comments widget，這裡做一下備忘</p>
-<ol>
-<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
-<li>在 根目錄下的 <strong>_config.yml</strong> 中增加<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
-<p>另外disqus widget的詳細設定，在你註冊disqus後，可以到官網調整</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="citzl96xs0001p8yfihgx5xkc" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
 
     </footer>
   </div>
@@ -578,9 +529,58 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="citzl96yh0007p8yfjgkafgil" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="citzo5ggh0001qoyfszk12hrg" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
+  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。</p>
+<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這也是hexo預設的comments widget，這裡做一下備忘</p>
+<ol>
+<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
+<li>在 根目錄下的 <strong>_config.yml</strong> 中增加<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
+<p>另外disqus widget的詳細設定，在你註冊disqus後，可以到官網調整</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="citzo5ggq0003qoyf7geu9gfc" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -632,7 +632,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="citzl9702000ip8yf8wsju7b4" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="citzo5gh20008qoyf1efina93" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -698,7 +698,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="citzl96xj0000p8yfxgz4v29c" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="citzo5ggb0000qoyfyhkfq4r4" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
