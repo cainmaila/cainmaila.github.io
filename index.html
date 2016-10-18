@@ -53,7 +53,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
@@ -71,6 +71,75 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+  
+    <article id="post-sublime-vue-template" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/18/sublime-vue-template/" class="article-date">
+  <time datetime="2016-10-18T02:23:36.000Z" itemprop="datePublished">2016-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>自從開始用Vue框架後，一直很快樂的在coding前端，不但學習曲線低，效能也上得了檯面</p>
+<p>最棒的是可以像React自訂Component，不但架構清晰，如果規劃的好，Component還可以拿去別的專案使用。</p>
+<p>vue.js 允許你自己定義 .vue 檔(Component檔)，你可以把Template，js，css(less、sass..) 全部封裝在裡面，最後透過 像是 webpack 或者 rollup 打包進你的專案使用。</p>
+<p>筆者本身使用 Sublime Text 作為開發IDE，你可上去 <a href="https://packagecontrol.io/" target="_blank" rel="external">packagecontrol.io</a>上查看vue的相關資源，目前有以下三個。</p>
+<img src="/2016/10/18/sublime-vue-template/a1.png" alt="a1.png" title="">
+<ul>
+<li><strong>Vuejs Snippets</strong> - 提供vue Snippets</li>
+<li><strong>Vue Syntax Highlight</strong> - vue語法支援</li>
+<li><strong>Vuejs Complete Package</strong> - vue語法自動完整</li>
+</ul>
+<p>有了以上這些掛件，基本上可以讓你在Sublime Text很開心的開發vue.js</p>
+<p>最後你如果有使用版型整理，會發現並沒有支援.vue檔的掛件 (這件事曾將讓我這偏執狂很很不開心XD)</p>
+<p>但是只細觀察後你會發現一件事，.vue的內容，其實是可以符合html規範的，所以當你想要整理.vue的Template時，只要把你平常整理html的方法拿來整理.vue就行了。</p>
+<ol>
+<li><p>首先安裝這個掛件 <a href="https://packagecontrol.io/packages/HTML-CSS-JS%20Prettify" target="_blank" rel="external">HTML-CSS-JS Prettify</a> ，他是用來幫你整理版面的。</p>
+</li>
+<li><p>打開工具列的 Preferences &gt;  Package Settings &gt; HTML/JS/CSS Prettify &gt; Set Prettify Preferences </p>
+</li>
+<li><p>設定檔中的的html支援檔名加上vue</p>
+</li>
+</ol>
+<img src="/2016/10/18/sublime-vue-template/s2.png" alt="s2.png" title="">
+<ol>
+<li><p>開工具列的 Preferences &gt;  Package Settings &gt; HTML/JS/CSS Prettify &gt; Set Plugin Options</p>
+</li>
+<li><p>把 <strong>format_on_save</strong> 參數改成 <strong>true</strong> ，這樣子每當你save時幫你整理對齊的版面。</p>
+</li>
+</ol>
+<p>碼農們! 繼續快樂的開發吧!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciuewfiud0006qoyfn10p7xnv" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-use-yern" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -111,9 +180,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciu984cke000gjsyftcap5jg2" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciuewfiwe0019qoyfm5kbtelu" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
@@ -174,9 +243,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciu984cjy0004jsyf43xmzxpv" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciuewfiu20003qoyfwdw20dze" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
@@ -258,9 +327,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciu984cke000ejsyf4256b7hu" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciuewfivm000iqoyffn0omp8u" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
@@ -307,9 +376,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciu984cku000hjsyfrobanr63" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciuewfiv9000hqoyfqe5aac8c" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -366,9 +435,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciu984cke000cjsyfwpyv3kol" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciuewfiuj0008qoyfw6bjd9sj" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jsdoc/">jsdoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
@@ -475,9 +544,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciu984cke000ajsyfadz0t85p" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciuewfiv2000eqoyfyangfn0n" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -528,9 +597,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="ciu984cjy0006jsyf8p1m9hgd" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="ciuewfiu40004qoyfr5todxmn" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
@@ -577,9 +646,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="ciu984cjy0003jsyf6nixh467" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="ciuewfitt0001qoyf4s31zdeq" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -626,66 +695,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="ciu984cjj0001jsyf7fdyztls" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="ciuewfitn0000qoyf9lkppz8t" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-how-to-use-commander" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/22/how-to-use-commander/" class="article-date">
-  <time datetime="2016-07-22T05:09:31.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/22/how-to-use-commander/">如何利用Commander建立自己的Node命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>commander模組可以製作自己的nodejs命令，類似grunt bower的全域指令服務</p>
-<h3 id="新增一個npm專案"><a href="#新增一個npm專案" class="headerlink" title="新增一個npm專案"></a>新增一個npm專案</h3><p>如果要上傳至npm服務，方便起見可以先開一個github專案，方便之後npm publish<br><br>好了之後clone下來，初始化專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm init</div></pre></td></tr></table></figure></p>
-<h3 id="建構命令"><a href="#建構命令" class="headerlink" title="建構命令"></a>建構命令</h3><p>安裝 <strong>commander</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i commander --save</div></pre></td></tr></table></figure>
-<p>範例</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Module dependencies.</div><div class="line"> */</div><div class="line"> </div><div class="line"><span class="keyword">var</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>);</div><div class="line"> </div><div class="line">program</div><div class="line">  .version(<span class="string">'0.0.1'</span>)</div><div class="line">  .option(<span class="string">'-p, --peppers'</span>, <span class="string">'Add peppers'</span>)</div><div class="line">  .option(<span class="string">'-P, --pineapple'</span>, <span class="string">'Add pineapple'</span>)</div><div class="line">  .option(<span class="string">'-b, --bbq-sauce'</span>, <span class="string">'Add bbq sauce'</span>)</div><div class="line">  .option(<span class="string">'-c, --cheese [type]'</span>, <span class="string">'Add the specified type of cheese [marble]'</span>, <span class="string">'marble'</span>)</div><div class="line">  .parse(process.argv);</div><div class="line"> </div><div class="line"><span class="built_in">console</span>.log(<span class="string">'you ordered a pizza with:'</span>);</div><div class="line"><span class="keyword">if</span> (program.peppers) <span class="built_in">console</span>.log(<span class="string">'  - peppers'</span>);</div><div class="line"><span class="keyword">if</span> (program.pineapple) <span class="built_in">console</span>.log(<span class="string">'  - pineapple'</span>);</div><div class="line"><span class="keyword">if</span> (program.bbqSauce) <span class="built_in">console</span>.log(<span class="string">'  - bbq'</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s cheese'</span>, program.cheese);</div></pre></td></tr></table></figure>
-<p>詳細內容說明請至官網看..</p>
-<p>重點第一行的<strong>#!/usr/bin/env node</strong>指定node執行</p>
-<h3 id="修改-package-json"><a href="#修改-package-json" class="headerlink" title="修改 package.json"></a>修改 package.json</h3><p>增加 bin 屬性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	bin: &#123; mycom: &quot;./index.js&quot;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>這代表自己命名一個 <strong>mycom</strong> 命令，會進入 <strong>index.js</strong> 這隻程式</p>
-<h3 id="上傳至npm"><a href="#上傳至npm" class="headerlink" title="上傳至npm"></a>上傳至npm</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm bublish</div></pre></td></tr></table></figure>
-<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><p>安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install 你建立的模組 -g</div></pre></td></tr></table></figure></p>
-<p>目前試過沒有安裝-g全域無法使用，區域使用方式之後再補上..</p>
-<p>執行自己的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mycom</div></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="ciu984cke0008jsyfe83md4fl" class="article-share-link">Delen</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Commentaren</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
 
     </footer>
   </div>
@@ -708,9 +723,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Labels</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -720,16 +735,16 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -737,9 +752,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
+          </li>
         
           <li>
             <a href="/2016/10/14/use-yern/">新一代的js套件管理工具yarn - 取代npm的工具</a>
@@ -755,10 +774,6 @@
         
           <li>
             <a href="/2016/09/07/use-webpack-dashboard/">讓你更優雅的使用Webpack - webpack-dashboard</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/05/use-leedian-jsdoc/">利用Jsdoc幫Javascript產出漂亮的文檔</a>
           </li>
         
       </ul>
