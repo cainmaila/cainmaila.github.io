@@ -3,14 +3,41 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: sublime text | Cain Play It</title>
+  <title>在你的Express加上https(SSL) | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cain Play It">
-<meta property="og:url" content="https://cainmaila.github.io/tags/sublime-text/index.html">
+  <meta name="description" content="如何在你的Express服務中加上SSL，如果你不希望付費申請的話，可以直接使用SSL For Free你唯一要做的事就是每三個月更新一次(你可以設定郵件通知)
+
+申請方式請參閱這篇文章SSL For Free 免費 SSL 憑證申請，使用 Let’s Encrypt 最簡單方法教學！
+申請完成後你會取得三個檔案
+
+ca_bundle.crt
+certificate.crt
+private.key">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在你的Express加上https(SSL)">
+<meta property="og:url" content="https://cainmaila.github.io/2016/11/08/express-ssl/index.html">
 <meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="如何在你的Express服務中加上SSL，如果你不希望付費申請的話，可以直接使用SSL For Free你唯一要做的事就是每三個月更新一次(你可以設定郵件通知)
+
+申請方式請參閱這篇文章SSL For Free 免費 SSL 憑證申請，使用 Let’s Encrypt 最簡單方法教學！
+申請完成後你會取得三個檔案
+
+ca_bundle.crt
+certificate.crt
+private.key">
+<meta property="og:image" content="https://cainmaila.github.io/2016/11/08/express-ssl/ssl.png">
+<meta property="og:updated_time" content="2016-11-08T09:17:40.225Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cain Play It">
+<meta name="twitter:title" content="在你的Express加上https(SSL)">
+<meta name="twitter:description" content="如何在你的Express服務中加上SSL，如果你不希望付費申請的話，可以直接使用SSL For Free你唯一要做的事就是每三個月更新一次(你可以設定郵件通知)
+
+申請方式請參閱這篇文章SSL For Free 免費 SSL 憑證申請，使用 Let’s Encrypt 最簡單方法教學！
+申請完成後你會取得三個檔案
+
+ca_bundle.crt
+certificate.crt
+private.key">
+<meta name="twitter:image" content="https://cainmaila.github.io/2016/11/08/express-ssl/ssl.png">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -70,40 +97,76 @@
      data-ad-slot="2223033852"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/10/18/sublime-vue-template/" class="archive-article-date">
-  <time datetime="2016-10-18T02:23:36.000Z" itemprop="datePublished">10月 18</time>
+</script><article id="post-express-ssl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/08/express-ssl/" class="article-date">
+  <time datetime="2016-11-08T08:48:23.000Z" itemprop="datePublished">2016-11-08</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
+    <h1 class="article-title" itemprop="name">
+      在你的Express加上https(SSL)
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如何在你的Express服務中加上SSL，如果你不希望付費申請的話，可以直接使用<a href="https://www.sslforfree.com/" target="_blank" rel="external">SSL For Free</a><br><br>你唯一要做的事就是每三個月更新一次(你可以設定郵件通知)</p>
+<img src="/2016/11/08/express-ssl/ssl.png" alt="ssl.png" title="">
+<p>申請方式請參閱這篇文章<a href="https://free.com.tw/ssl-for-free/" target="_blank" rel="external">SSL For Free 免費 SSL 憑證申請，使用 Let’s Encrypt 最簡單方法教學！</a></p>
+<p>申請完成後你會取得三個檔案</p>
+<ul>
+<li>ca_bundle.crt</li>
+<li>certificate.crt</li>
+<li>private.key</li>
+</ul>
+<p>certificate.crt需先轉成pem檔才可以使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in certificate.crt -inform der -outform pem -out certificate.pem</div></pre></td></tr></table></figure>
+<p>透過openssl將crt轉成pem檔</p>
+<p>匯入express服務<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</div><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="keyword">var</span> keyPath = <span class="string">'./private.key'</span>;</div><div class="line"><span class="keyword">var</span> certPath = <span class="string">'./certificate.pem'</span>;</div><div class="line"><span class="keyword">var</span> hskey = fs.readFileSync(keyPath);</div><div class="line"><span class="keyword">var</span> hscert = fs.readFileSync(certPath);</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</div><div class="line"><span class="keyword">var</span> app = express();</div><div class="line">app.use(express.static(path.join(__dirname, <span class="string">'web'</span>)));</div><div class="line"><span class="keyword">var</span> server = https.createServer(&#123;</div><div class="line">	key: hskey,</div><div class="line">    cert: hscert</div><div class="line">&#125;, app);</div><div class="line">server.listen(<span class="number">443</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'runing Web Server in '</span> + port + <span class="string">' port...'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>SSL預設對外請使用 443 port，路由請記得開啟</p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="civ9a8rhh00003syfkoliss4m" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/10/18/sublime-vue-template/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Sublime Text 整理 vue Template</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
         
           <aside id="sidebar">
@@ -204,11 +267,13 @@
 <script>
   var disqus_shortname = 'cainmaila';
   
+  var disqus_url = 'https://cainmaila.github.io/2016/11/08/express-ssl/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

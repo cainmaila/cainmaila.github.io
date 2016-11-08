@@ -72,6 +72,60 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-express-ssl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/08/express-ssl/" class="article-date">
+  <time datetime="2016-11-08T08:48:23.000Z" itemprop="datePublished">2016-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/08/express-ssl/">在你的Express加上https(SSL)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如何在你的Express服務中加上SSL，如果你不希望付費申請的話，可以直接使用<a href="https://www.sslforfree.com/" target="_blank" rel="external">SSL For Free</a><br><br>你唯一要做的事就是每三個月更新一次(你可以設定郵件通知)</p>
+<img src="/2016/11/08/express-ssl/ssl.png" alt="ssl.png" title="">
+<p>申請方式請參閱這篇文章<a href="https://free.com.tw/ssl-for-free/" target="_blank" rel="external">SSL For Free 免費 SSL 憑證申請，使用 Let’s Encrypt 最簡單方法教學！</a></p>
+<p>申請完成後你會取得三個檔案</p>
+<ul>
+<li>ca_bundle.crt</li>
+<li>certificate.crt</li>
+<li>private.key</li>
+</ul>
+<p>certificate.crt需先轉成pem檔才可以使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in certificate.crt -inform der -outform pem -out certificate.pem</div></pre></td></tr></table></figure>
+<p>透過openssl將crt轉成pem檔</p>
+<p>匯入express服務<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</div><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="keyword">var</span> keyPath = <span class="string">'./private.key'</span>;</div><div class="line"><span class="keyword">var</span> certPath = <span class="string">'./certificate.pem'</span>;</div><div class="line"><span class="keyword">var</span> hskey = fs.readFileSync(keyPath);</div><div class="line"><span class="keyword">var</span> hscert = fs.readFileSync(certPath);</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</div><div class="line"><span class="keyword">var</span> app = express();</div><div class="line">app.use(express.static(path.join(__dirname, <span class="string">'web'</span>)));</div><div class="line"><span class="keyword">var</span> server = https.createServer(&#123;</div><div class="line">	key: hskey,</div><div class="line">    cert: hscert</div><div class="line">&#125;, app);</div><div class="line">server.listen(<span class="number">443</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'runing Web Server in '</span> + port + <span class="string">' port...'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>SSL預設對外請使用 443 port，路由請記得開啟</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="civ9a8rhh00003syfkoliss4m" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-sublime-vue-template" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/10/18/sublime-vue-template/" class="article-date">
@@ -127,7 +181,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciuewfiud0006qoyfn10p7xnv" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="civ9a8rj9000g3syfxvma38jp" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -180,7 +234,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciuewfiwe0019qoyfm5kbtelu" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="civ9a8rjh000l3syf2pvptxyx" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -243,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciuewfiu20003qoyfwdw20dze" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="civ9a8rih00093syfdsz9j7c8" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -327,7 +381,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciuewfivm000iqoyffn0omp8u" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="civ9a8rjc000h3syfpxpyvtgm" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -376,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciuewfiv9000hqoyfqe5aac8c" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="civ9a8rjf000k3syfe6bidqzr" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -435,7 +489,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciuewfiuj0008qoyfw6bjd9sj" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="civ9a8rj4000d3syf1mr2t0ak" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -544,7 +598,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciuewfiv2000eqoyfyangfn0n" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="civ9a8rip000c3syf5ga1ta3l" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -597,7 +651,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="ciuewfiu40004qoyfr5todxmn" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="civ9a8ri900063syf1qk7l2wg" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -646,58 +700,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="ciuewfitt0001qoyf4s31zdeq" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="civ9a8rhz00043syf5ffhb6la" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hexo-add-disqus-widget" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/25/hexo-add-disqus-widget/" class="article-date">
-  <time datetime="2016-07-25T03:12:03.000Z" itemprop="datePublished">2016-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/25/hexo-add-disqus-widget/">如何在Hexo預設模板增加comments的Widget</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上週用Hexo架設了部落格後，寫文章真的方便很多，由於我對面版面，沒什麼要求，所以直接使用Hexo的預設版型landscape，不過發現並沒有和讀者互動的comments，爬了下文章，看來得自己增加Widget設定。</p>
-<p>網友上推薦直接掛上<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>的功能，這也是hexo預設的comments widget，這裡做一下備忘</p>
-<ol>
-<li>首先到<a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a>註冊一個帳號，然後記下<strong>你的ID</strong></li>
-<li>在 根目錄下的 <strong>_config.yml</strong> 中增加<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Disqus</div><div class="line">disqus_shortname: 你的ID</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>完成後記得編譯你的版型，發布後你應該可以看到你的comments Widget</p>
-<p>另外disqus widget的詳細設定，在你註冊disqus後，可以到官網調整</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="ciuewfitn0000qoyf9lkppz8t" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -725,7 +730,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -735,7 +740,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
     </div>
   </div>
 
@@ -744,7 +749,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -755,6 +760,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/11/08/express-ssl/">在你的Express加上https(SSL)</a>
+          </li>
         
           <li>
             <a href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
@@ -770,10 +779,6 @@
         
           <li>
             <a href="/2016/09/14/use-thrift-nodejs/">基於Thrift的Node.js微服物通訊</a>
-          </li>
-        
-          <li>
-            <a href="/2016/09/07/use-webpack-dashboard/">讓你更優雅的使用Webpack - webpack-dashboard</a>
           </li>
         
       </ul>
