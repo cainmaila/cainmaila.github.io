@@ -1381,3 +1381,8 @@ pre .javascript .function {
   margin-right: 5px;
   display: inline-block;
 }
+#cain .head {
+  -webkit-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+}
