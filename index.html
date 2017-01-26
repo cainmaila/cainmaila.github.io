@@ -53,7 +53,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
@@ -71,6 +71,60 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+  
+    <article id="post-rollup-web-app-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/26/rollup-web-app-2/" class="article-date">
+  <time datetime="2017-01-26T05:41:56.000Z" itemprop="datePublished">2017-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇 <a href="/2017/01/25/rollup-web-app/">建立你的前端開發環境(一)</a>，你已經可以把一個基本的js壓縮打包起來，這個單元我們準備開始建構開發ES6環境。</p>
+<p>就上一篇的例子，如果你用ES6語法寫一個簡單的Class宣告。</p>
+<p><strong>app.js</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCalss</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(myName) &#123;</div><div class="line">        <span class="keyword">this</span>.myName = myName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    logMyName() &#123;</div><div class="line">        <span class="built_in">console</span>.info(<span class="keyword">this</span>.myName);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> myClass = <span class="keyword">new</span> MyCalss(<span class="string">'Cain'</span>);</div><div class="line">myClass.logMyName();</div></pre></td></tr></table></figure></p>
+<p>我們透過 yarn dev 編譯成 build.js 結果如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCalss</span> </span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(myName) &#123;</div><div class="line">        <span class="keyword">this</span>.myName = myName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    logMyName() &#123;</div><div class="line">        <span class="built_in">console</span>.info(<span class="keyword">this</span>.myName);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> myClass = <span class="keyword">new</span> MyCalss(<span class="string">'Cain'</span>);</div><div class="line">myClass.logMyName();</div><div class="line"></div><div class="line">&#125;());</div></pre></td></tr></table></figure></p>
+<p>你會發覺，code 幾乎沒有被處理，僅被一個立即執行的函示打包起來，這不是我們期望的結果，接下來，我們繼續建構，目標是可以把ES6輸出成ES5的code，讓大部分的瀏覽器可以正常執行。</p>
+<h2 id="建立ES6開發環境"><a href="#建立ES6開發環境" class="headerlink" title="建立ES6開發環境"></a>建立ES6開發環境</h2><p>把ES6輸出成ES5需要兩個掛件，首先安裝以下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yarn add rollup-plugin-babel --dev</div><div class="line">yarn add babel-preset-es2015-rollup --dev</div></pre></td></tr></table></figure></p>
+<p>我們利用 rollup 讓他透過 babel 把 es6 的 code 編譯成為 es5<br><br>接下來我們建立個 babel 的設定檔<br><strong>.babel</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"presets"</span>: [<span class="string">"es2015-rollup"</span>],</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>把 babel 掛件增加到你的 <strong>rollup.config.js</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</div><div class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    entry: <span class="string">'app.js'</span>,</div><div class="line">    dest: <span class="string">'build.js'</span>,</div><div class="line">    format: <span class="string">'iife'</span>,</div><div class="line">    sourceMap: <span class="string">'inline'</span>,</div><div class="line">    plugins: [</div><div class="line">        babel(&#123; <span class="comment">//增加 babel 掛件</span></div><div class="line">            exclude: <span class="string">'node_modules/**'</span>, <span class="comment">//exclude代表node_modules資料夾不須透過babel編譯</span></div><div class="line">        &#125;),</div><div class="line">        uglify(),</div><div class="line">    ]</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>之後再次編譯，yarn dev，編譯結果如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> classCallCheck = <span class="function"><span class="keyword">function</span> (<span class="params">instance, Constructor</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!(instance <span class="keyword">instanceof</span> Constructor)) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Cannot call a class as a function"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> createClass = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">defineProperties</span>(<span class="params">target, props</span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; props.length; i++) &#123;</div><div class="line">      <span class="keyword">var</span> descriptor = props[i];</div><div class="line">      descriptor.enumerable = descriptor.enumerable || <span class="literal">false</span>;</div><div class="line">      descriptor.configurable = <span class="literal">true</span>;</div><div class="line">      <span class="keyword">if</span> (<span class="string">"value"</span> <span class="keyword">in</span> descriptor) descriptor.writable = <span class="literal">true</span>;</div><div class="line">      <span class="built_in">Object</span>.defineProperty(target, descriptor.key, descriptor);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">Constructor, protoProps, staticProps</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (protoProps) defineProperties(Constructor.prototype, protoProps);</div><div class="line">    <span class="keyword">if</span> (staticProps) defineProperties(Constructor, staticProps);</div><div class="line">    <span class="keyword">return</span> Constructor;</div><div class="line">  &#125;;</div><div class="line">&#125;();</div><div class="line"></div><div class="line"><span class="keyword">var</span> MyCalss = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">MyCalss</span>(<span class="params">myName</span>) </span>&#123;</div><div class="line">        classCallCheck(<span class="keyword">this</span>, MyCalss);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.myName = myName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    createClass(MyCalss, [&#123;</div><div class="line">        key: <span class="string">'logMyName'</span>,</div><div class="line">        value: <span class="function"><span class="keyword">function</span> <span class="title">logMyName</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.info(<span class="keyword">this</span>.myName);</div><div class="line">        &#125;</div><div class="line">    &#125;]);</div><div class="line">    <span class="keyword">return</span> MyCalss;</div><div class="line">&#125;();</div><div class="line"></div><div class="line"><span class="keyword">var</span> myClass = <span class="keyword">new</span> MyCalss(<span class="string">'Cain'</span>);</div><div class="line">myClass.logMyName();</div><div class="line"></div><div class="line">&#125;());</div></pre></td></tr></table></figure></p>
+<p>太棒了! 透過 babel 後，原本的 es6 編譯成為 es5，且format iife模式讓你直接js把掛在script標籤上，瀏覽器可以正常的執行它。</p>
+<blockquote>
+<p>如果如果你仔細看過 webpack  與 rollup 編譯的結果後，你會發覺 rollup 真的乾淨非常多，產出的js檔案也相對小，重點是佈建整個開發環境速度也相當快速，這也是我目前選用 rollup 的主因</p>
+</blockquote>
+<p>待續…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="ciye0b36o0004e0yfh2pjy6uj" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-rollup-web-app" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -94,7 +148,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>為了建構一個讓自己可以開心工作的js前端開發環境，嘗試了了Grunt，Gulp,一直到目前最多人的 Webpack<br><br>Webpack 真的很屌，外掛資源豐富，但是總覺得輸出封裝後的code有些多餘(甚至你不會想要看他)，但其實有時候只是需要封裝一個小模組，可能一些小演算法，或許用了ES6語法，想輸出處理成乾乾淨淨的js。這時候可以考慮使用 <a href="http://rollupjs.org/" target="_blank" rel="external">Rollup.js</a> , 比起 Webpack 它更小更快，還能刪除多餘的程式碼(沒有用到的模組，rollup不會把它封裝到你的js)，但是最大的重點就是，我實在不想為了寫個小東西就去建構一個肥大的webpack環境。</p>
+        <p>為了建構一個讓自己可以開心工作的js前端開發環境，嘗試了了Grunt，Gulp,一直到目前最多人的 Webpack<br><br>Webpack 真的很不錯，外掛資源也豐富，但是總覺得輸出封裝後的code有些多餘(甚至你不會想要看他)，其實有時候只是需要封裝一個小模組，可能一些小演算法，或許用了ES6語法，想輸出處理成乾乾淨淨的js。這時候可以考慮使用 <a href="http://rollupjs.org/" target="_blank" rel="external">Rollup.js</a> , 比起 Webpack 它更小更快，還能刪除多餘的程式碼(沒有用到的模組，rollup不會把它封裝到你的js)，但是最大的重點就是，我實在不想為了寫個小東西就去建構一個肥大的webpack環境。</p>
 <h2 id="Rollup-js-官網"><a href="#Rollup-js-官網" class="headerlink" title="Rollup.js 官網"></a><a href="http://rollupjs.org/" target="_blank" rel="external">Rollup.js 官網</a></h2><p>本教程將一步一步帶你利用rollup建構一個自己的 Web app 前端開發環境</p>
 <h2 id="安裝-yarn"><a href="#安裝-yarn" class="headerlink" title="安裝 yarn"></a>安裝 yarn</h2><p>如果你以熟悉npm的話，yarn你可以當成一樣的東西，只是我覺得大部分情況下yarn更快。<br><br>如果你想繼續使用熟悉的npm，並不會影響rollup的使用，請自行評估。<br><br>關於yarn安裝與使用，<a href="https://cainmaila.github.io/2016/10/14/use-yern/">你可以參考這裡</a></p>
 <h2 id="建構你的第一個rollup專案"><a href="#建構你的第一個rollup專案" class="headerlink" title="建構你的第一個rollup專案"></a>建構你的第一個rollup專案</h2><p>為了讓你可以很清楚下去，我們這裡先使用最單純的作法。</p>
@@ -121,14 +175,13 @@
 <p>首先安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn add rollup-plugin-uglify --dev</div></pre></td></tr></table></figure></p>
 <p>在 rollup.config.js 中加上 uglify 掛件<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    entry: <span class="string">'app.js'</span>,</div><div class="line">    dest: <span class="string">'build.js'</span>,</div><div class="line">    format: <span class="string">'iife'</span>,</div><div class="line">    sourceMap: <span class="string">'inline'</span>, <span class="comment">//加上sourceMap</span></div><div class="line">    plugins: [</div><div class="line">        uglify(), <span class="comment">//匯入 uglify 掛件</span></div><div class="line">    ]</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <p>之後再編譯一次，你會發覺輸出的 build.js 已經被壓縮處理過了。<br><br>為了開發上的方便，你可以在輸出的code上加上 sourceMap ，所以我加上了 sourceMap: ‘inline’ 設定，這樣子如果有資訊輸出或錯誤，可以明確告訴你位置在哪(行數那些..)，如果不需要可以拿掉他，終究對編譯速度還是有影響。<br><br>實際發布請把這個設定拿掉，inline 這個設定會把 sourceMap 加在js結尾，增加了js容量，這不是我們希望看到的結果。</p>
-<p>待續…</p>
-
+<h3 id="建立你的前端開發環境-二-ES6開發環境"><a href="#建立你的前端開發環境-二-ES6開發環境" class="headerlink" title="建立你的前端開發環境(二) - ES6開發環境"></a><a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a></h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciycrtmxc000e0oyf5aup1tpe" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciye0b36x0008e0yf3qewtgod" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -180,9 +233,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciycrtmw300010oyfvm58focg" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciye0b36b0000e0yf1fz7im7o" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
@@ -249,9 +302,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciycrtmxk000h0oyfbrgr0dbs" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciye0b376000ce0yfl75ys4it" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -302,9 +355,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciycrtmy8000n0oyf9bfwavfg" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciye0b38d0015e0yfkreoo7pi" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
@@ -365,9 +418,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciycrtmwn00080oyfkcfr9vfk" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciye0b36u0006e0yfs7c3i77n" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
@@ -449,9 +502,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciycrtmxz000l0oyfkr35v6v2" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciye0b39n001ie0yfpy83prkc" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
@@ -498,9 +551,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciycrtmxr000i0oyf4r8kkerd" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciye0b38o0018e0yfokrrxpjb" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -557,9 +610,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciycrtmxw000k0oyfnh3cip3n" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciye0b37b000he0yfaa8gn9f3" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jsdoc/">jsdoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
@@ -666,65 +719,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciycrtmwp000a0oyfh6uv8w8y" class="article-share-link">Delen</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciye0b379000ee0yfibkojxue" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Commentaren</a>
+        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
-  <time datetime="2016-07-25T11:09:46.000Z" itemprop="datePublished">2016-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/25/how-to-setup-redis/">nodejs使用redis緩存key值</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。</p>
-<p><del>但是有時候專案實在不大，有時還是會偷偷拿來用</del></p>
-<p>關於redis使用，這裡做一下備忘順便給初學者參考。</p>
-<h4 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h4><p>Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-3.2.1.tar.gz</div><div class="line">tar xzf redis-3.2.1.tar.gz</div><div class="line">cd redis-3.2.1</div><div class="line">make</div></pre></td></tr></table></figure></p>
-<p>Windows<br><a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="external">到這裡來下載安裝</a></p>
-<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>執行安裝目錄下的 redis-server<br><br>window 版本可能得指定conf檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server redis.windows.conf</div></pre></td></tr></table></figure></p>
-<p>這個.conf是 redis 的一些參數設定</p>
-<h4 id="nodejs使用"><a href="#nodejs使用" class="headerlink" title="nodejs使用"></a>nodejs使用</h4><p>安裝模組<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install redis</div></pre></td></tr></table></figure></p>
-<p>連線<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var redis = require(&apos;redis&apos;);</div><div class="line">//預設連線本機的6379 port，也可以指定 redis.createClient(port, host);</div><div class="line">var client = redis.createClient();</div><div class="line">client.on(&apos;connect&apos;, function() &#123;</div><div class="line">    console.log(&apos;connected&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>新增key並查詢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.set(&apos;keyName&apos;, &apos;myName&apos;); //新增</div><div class="line">client.get(&apos;keyName&apos;, function(err, reply) &#123; //查詢</div><div class="line">    console.log(reply); //輸出 myName</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>如果沒有key就會是 null</p>
-<p>存的key值，都會變轉成字串</p>
-<p><a href="https://www.sitepoint.com/using-redis-node-js/" target="_blank" rel="external">其他請自行參閱</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="ciycrtmwk00060oyfb1xaz1y0" class="article-share-link">Delen</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Commentaren</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
 
     </footer>
   </div>
@@ -759,9 +759,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Labels</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -771,16 +771,16 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 13.33px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -788,9 +788,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
+          </li>
         
           <li>
             <a href="/2017/01/25/rollup-web-app/">建立你的前端開發環境(一) - Rollup</a>
@@ -806,10 +810,6 @@
         
           <li>
             <a href="/2016/10/14/use-yern/">新一代的js套件管理工具yarn - 取代npm的工具</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/07/how-to-install-node-rados/">node-rados安裝與使用 - nodejs與Ceph通訊</a>
           </li>
         
       </ul>
