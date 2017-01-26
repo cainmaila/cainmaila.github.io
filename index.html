@@ -51,9 +51,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
@@ -71,6 +71,75 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+  
+    <article id="post-rollup-web-app-3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/26/rollup-web-app-3/" class="article-date">
+  <time datetime="2017-01-26T08:10:40.000Z" itemprop="datePublished">2017-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>經過上一篇 <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a> 建構後，你的rollup已經可以正常編譯ES6專案了。</p>
+<p>如果你的專案需要其他第三方外掛，比方 vue vue-router 等工具，一般方式你可以直接把code掛在script標籤上(全域)<br><br>不過實務上我還是喜歡利用 npm 來管理我的外掛模組，比方我使用 <strong>yarn add vue</strong> 方式來安裝 vue ，然後再使用 <strong>import Vue from ‘vue’</strong> 方式來匯入使用。<br><br>不過如果依照目前 rollup 專案，編譯時會產生錯誤，因為實際上使用npm管理的模塊，並不會被 rollup 直接使用。如果你需要使用 npm 管理的掛件，必須再安裝以下掛件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn add rollup-plugin-node-resolve --dev</div></pre></td></tr></table></figure>
+<p>它會允許 rollup 使用 node_modules 資料夾中的掛件，不過 npm 所管理的模塊是使用 CommonJS ，為了讓 rollup 可以正確編譯它，需要再安裝以下掛件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn add rollup-plugin-commonjs --dev</div></pre></td></tr></table></figure>
+<p>這個掛件可以把 CommonJS 模塊轉換成為 ES6 以便後續讓 bable 去解譯它。</p>
+<p>修改你的 <strong>rollup.config.js</strong> 加上以上兩個掛件</p>
+<pre><code class="javascript"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;
+<span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;
+<span class="keyword">import</span> nodeResolve <span class="keyword">from</span> <span class="string">'rollup-plugin-node-resolve'</span>;
+<span class="keyword">import</span> commonjs <span class="keyword">from</span> <span class="string">'rollup-plugin-commonjs'</span>;
+<span class="keyword">export</span> <span class="keyword">default</span> {
+    entry: <span class="string">'src/app.js'</span>,
+    dest: <span class="string">'dist/build.js'</span>,
+    format: <span class="string">'iife'</span>,
+    sourceMap: <span class="string">'inline'</span>,
+    plugins: [
+        nodeResolve({ jsnext: <span class="literal">true</span> }), <span class="comment">//取用node_modules中的模塊</span>
+        commonjs(), <span class="comment">//將commonjs轉換為es6</span>
+        babel({
+            exclude: <span class="string">'node_modules/**'</span>, <span class="comment">//掠過檢查node_modules資料夾</span>
+        }),
+        uglify(),
+    ]
+};
+</code></pre>
+<p>另外必須注意一下 plugins 的順序，rollup 會依順序解析你的模塊</p>
+<p>這樣子你就可以利用 import 來匯入安裝並使用 npm 安裝的模塊了</p>
+<p>待續…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="ciye4kcqn000ckgyfrqentujb" class="article-share-link">Partager</a>
+      
+        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Commentaires</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-rollup-web-app-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -101,20 +170,19 @@
 <p>你會發覺，code 幾乎沒有被處理，僅被一個立即執行的函示打包起來，這不是我們期望的結果，接下來，我們繼續建構，目標是可以把ES6輸出成ES5的code，讓大部分的瀏覽器可以正常執行。</p>
 <h2 id="建立ES6開發環境"><a href="#建立ES6開發環境" class="headerlink" title="建立ES6開發環境"></a>建立ES6開發環境</h2><p>把ES6輸出成ES5需要兩個掛件，首先安裝以下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yarn add rollup-plugin-babel --dev</div><div class="line">yarn add babel-preset-es2015-rollup --dev</div></pre></td></tr></table></figure></p>
 <p>我們利用 rollup 讓他透過 babel 把 es6 的 code 編譯成為 es5<br><br>接下來我們建立個 babel 的設定檔<br><strong>.babel</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"presets"</span>: [<span class="string">"es2015-rollup"</span>],</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>把 babel 掛件增加到你的 <strong>rollup.config.js</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</div><div class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    entry: <span class="string">'app.js'</span>,</div><div class="line">    dest: <span class="string">'build.js'</span>,</div><div class="line">    format: <span class="string">'iife'</span>,</div><div class="line">    sourceMap: <span class="string">'inline'</span>,</div><div class="line">    plugins: [</div><div class="line">        babel(&#123; <span class="comment">//增加 babel 掛件</span></div><div class="line">            exclude: <span class="string">'node_modules/**'</span>, <span class="comment">//exclude代表node_modules資料夾不須透過babel編譯</span></div><div class="line">        &#125;),</div><div class="line">        uglify(),</div><div class="line">    ]</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>把 babel 掛件增加到你的 <strong>rollup.config.js</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> uglify <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</div><div class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">    entry: <span class="string">'app.js'</span>,</div><div class="line">    dest: <span class="string">'build.js'</span>,</div><div class="line">    format: <span class="string">'iife'</span>,</div><div class="line">    sourceMap: <span class="string">'inline'</span>,</div><div class="line">    plugins: [</div><div class="line">        babel(), <span class="comment">//增加 babel 掛件</span></div><div class="line">        uglify(),</div><div class="line">    ]</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <p>之後再次編譯，yarn dev，編譯結果如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> classCallCheck = <span class="function"><span class="keyword">function</span> (<span class="params">instance, Constructor</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!(instance <span class="keyword">instanceof</span> Constructor)) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"Cannot call a class as a function"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> createClass = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">defineProperties</span>(<span class="params">target, props</span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; props.length; i++) &#123;</div><div class="line">      <span class="keyword">var</span> descriptor = props[i];</div><div class="line">      descriptor.enumerable = descriptor.enumerable || <span class="literal">false</span>;</div><div class="line">      descriptor.configurable = <span class="literal">true</span>;</div><div class="line">      <span class="keyword">if</span> (<span class="string">"value"</span> <span class="keyword">in</span> descriptor) descriptor.writable = <span class="literal">true</span>;</div><div class="line">      <span class="built_in">Object</span>.defineProperty(target, descriptor.key, descriptor);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">Constructor, protoProps, staticProps</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (protoProps) defineProperties(Constructor.prototype, protoProps);</div><div class="line">    <span class="keyword">if</span> (staticProps) defineProperties(Constructor, staticProps);</div><div class="line">    <span class="keyword">return</span> Constructor;</div><div class="line">  &#125;;</div><div class="line">&#125;();</div><div class="line"></div><div class="line"><span class="keyword">var</span> MyCalss = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">MyCalss</span>(<span class="params">myName</span>) </span>&#123;</div><div class="line">        classCallCheck(<span class="keyword">this</span>, MyCalss);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.myName = myName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    createClass(MyCalss, [&#123;</div><div class="line">        key: <span class="string">'logMyName'</span>,</div><div class="line">        value: <span class="function"><span class="keyword">function</span> <span class="title">logMyName</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.info(<span class="keyword">this</span>.myName);</div><div class="line">        &#125;</div><div class="line">    &#125;]);</div><div class="line">    <span class="keyword">return</span> MyCalss;</div><div class="line">&#125;();</div><div class="line"></div><div class="line"><span class="keyword">var</span> myClass = <span class="keyword">new</span> MyCalss(<span class="string">'Cain'</span>);</div><div class="line">myClass.logMyName();</div><div class="line"></div><div class="line">&#125;());</div></pre></td></tr></table></figure></p>
 <p>太棒了! 透過 babel 後，原本的 es6 編譯成為 es5，且format iife模式讓你直接js把掛在script標籤上，瀏覽器可以正常的執行它。</p>
 <blockquote>
 <p>如果如果你仔細看過 webpack  與 rollup 編譯的結果後，你會發覺 rollup 真的乾淨非常多，產出的js檔案也相對小，重點是佈建整個開發環境速度也相當快速，這也是我目前選用 rollup 的主因</p>
 </blockquote>
-<p>待續…</p>
-
+<h3 id="建立你的前端開發環境-三-使用-npm-的第三方模塊"><a href="#建立你的前端開發環境-三-使用-npm-的第三方模塊" class="headerlink" title="建立你的前端開發環境(三) - 使用 npm 的第三方模塊"></a><a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a></h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="ciye0b36o0004e0yfh2pjy6uj" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="ciye4kcqb0006kgyfo894cab0" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -179,9 +247,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciye0b36x0008e0yf3qewtgod" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciye4kcqt000hkgyfmleshjwp" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -233,9 +301,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciye0b36b0000e0yf1fz7im7o" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciye4kcpp0000kgyf4fznh3xm" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
@@ -302,9 +370,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciye0b376000ce0yfl75ys4it" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciye4kcqw000kkgyf2cr7mhu2" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -355,9 +423,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciye0b38d0015e0yfkreoo7pi" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciye4kcr7000pkgyfrwfrh5ul" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
@@ -418,9 +486,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciye0b36u0006e0yfs7c3i77n" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciye4kcqf0009kgyfouppll5r" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
@@ -502,9 +570,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciye0b39n001ie0yfpy83prkc" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciye4kcr2000nkgyfke2ggxy2" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
@@ -551,9 +619,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciye0b38o0018e0yfokrrxpjb" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciye4kcrg000rkgyfzbun107g" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -610,121 +678,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciye0b37b000he0yfaa8gn9f3" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciye4kcqz000lkgyfhu2vgnwo" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jsdoc/">jsdoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-how-to-use-cordova" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/28/how-to-use-cordova/" class="article-date">
-  <time datetime="2016-07-28T04:45:01.000Z" itemprop="datePublished">2016-07-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Cordova是一個開放源碼移動開發框架。它允許您使用標準的web技術如HTML5、CSS3和JavaScript進行跨平臺開發。</p>
-<p>前身是Phonegap，這樣說可能很多人心裡有底了。或許有些人會說，用這種方式包裝WedView成為APP效能不是很差嗎?</p>
-<p>實際上以目前手機的硬體與效能，已經跟以前不一樣了，甚至有些幾乎接近個人電腦(而且將來還可能會更好)，加上code好好寫的話，性能也不至於到不能看的程度(實際上很多性能不好的APP都是因為code沒有好好寫，比方沒有好好的使用硬體加速，或是記憶體與事件流程沒有好好管理..)</p>
-<p>雖說性能依然不能跟原生做比較，但是由於開發成本差異實在太大了，某些情況下直接使用Cordova包裝成APP說真的也可以是一種選擇。</p>
-<p>如果你已經是一個Web開發者，Cordova真的可以幫你省下非常說的時間。</p>
-<p>本篇針對在Windows下第一次使用Cordova輸出一個Android APP做說明。(在這之前你可能需要先學會如何使用nodejs工具命令)。Cordova使用上真的相當容易，比較麻煩的就是安裝流程繁瑣，最近因為工作需要，又再把環境建立起來，順便寫下來給需要的人參考。</p>
-<h4 id="安裝Crodova"><a href="#安裝Crodova" class="headerlink" title="安裝Crodova"></a>安裝Crodova</h4><p>安裝Cordova全域命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i -g cordova</div></pre></td></tr></table></figure></p>
-<h4 id="安裝JAVA開發工具箱（JDK）"><a href="#安裝JAVA開發工具箱（JDK）" class="headerlink" title="安裝JAVA開發工具箱（JDK）"></a>安裝JAVA開發工具箱（JDK）</h4><p>以下針對Android，都是繁瑣的步驟，按照步驟過了這裡就可以快樂開發了XD</p>
-<p>首先安裝jdk</p>
-<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">Java SE Development Kit 8 Downloads</a></p>
-<p>下載windows版本，安裝後設定下面這些系統變數，<a href="http://jdev.tw/blog/4678/windows-10-environment-variable-editing" target="_blank" rel="external">不會的看這裡</a></p>
-<ul>
-<li><strong>PATH 加上你剛剛的jdk路徑</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Program Files\Java\jdk1.8.0_101\bin</div></pre></td></tr></table></figure>
-<p>這是我的別照抄了，就是你剛剛裝的路徑，進去bin資料夾</p>
-<ul>
-<li><strong>增加 JAVA_HOME 變數</strong></li>
-</ul>
-<p>新增一個變數叫做<strong>JAVA_HOME</strong>設為jdk路徑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Program Files\Java\jdk1.8.0_101</div></pre></td></tr></table></figure></p>
-<p>這是我的別照抄了，就是你剛剛裝的路徑</p>
-<h4 id="安裝Android-SDK"><a href="#安裝Android-SDK" class="headerlink" title="安裝Android SDK"></a>安裝Android SDK</h4><p>這步驟下載花很多時間，忍耐一下…</p>
-<ul>
-<li><strong>首先下載安裝Android sdk tools</strong></li>
-</ul>
-<p><a href="https://developer.android.com/studio/releases/sdk-tools.html" target="_blank" rel="external">SDK Tools Release Notes</a></p>
-<p>這個工具會幫你管理Android sdk，之後SDK用它來幫你下載。</p>
-<ul>
-<li><strong>加上Android sdk tools系統變數</strong></li>
-</ul>
-<p>Path 加上Android sdk tools的路徑</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">C:\Users\user\AppData\Local\Android\Sdk\tools</div><div class="line">C:\Users\user\AppData\Local\Android\Sdk\platform-tools</div></pre></td></tr></table></figure>
-<p>一樣別照抄，我不知道你的tools裝在哪裡，有兩個路徑，別漏掉了。</p>
-<ul>
-<li><strong>新增一個 ANDROID_HOME 變數</strong></li>
-</ul>
-<p>新增 ANDROID_HOME 變數<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Users\user\AppData\Local\Android\Sdk</div></pre></td></tr></table></figure></p>
-<p>一樣別照抄，設為你的tools路徑，很多人都少了這個…</p>
-<p>到這裡後，安裝全都完成了，Android sdk tools預設幫你安裝最新的SDK，不過Cordova可能不會用最新的，你可以再使用Android sdk tools安裝需要的sdk版本</p>
-<p>終於可以開始輸出第一個專案試試XD</p>
-<h4 id="建立一個Android專案"><a href="#建立一個Android專案" class="headerlink" title="建立一個Android專案"></a>建立一個Android專案</h4><ul>
-<li><strong>建立一個專案，以下針對Android</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova create hello com.myName.hello HelloWorld</div></pre></td></tr></table></figure>
-<p>說明一下上面的內容<br><br><strong>cordova create hello</strong> 建立一個專案資料夾叫做hello<br><br><strong>com.myName.hello</strong> 這是一個命名空間，在手機上每個app都會有自己的命名空間，一般而言會像網址反向。<br><br><strong>HelloWorld</strong> 你的APP名稱</p>
-<ul>
-<li><strong>新增Android平台</strong></li>
-</ul>
-<p>剛剛的動作，你應該已經產生了一個hello專案資料夾</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd hello</div><div class="line">cordova platform add android</div></pre></td></tr></table></figure>
-<p>建立一個android平台的專案包(另外當然還有ios，win8….這裡不多說明)</p>
-<ul>
-<li><strong>打包app</strong></li>
-</ul>
-<p>我們先打包一個空專案</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova build</div></pre></td></tr></table></figure>
-<p>耐心等等待一下，如果沒有錯誤，那恭喜你，你已經建立好開發環境了</p>
-<p>如果遇到錯誤，一班都是以下問題</p>
-<ol>
-<li>path等的一些系統變數，忘了設定，或是設錯</li>
-<li>Android sdk tools裝的SDK版本不對，這個看錯誤訊息應該可以知道他要什麼版本 (platform android target 問題)</li>
-</ol>
-<p>你可以把輸出的apk裝在你的手機上看看，應該會看到一個cordova首頁的畫面。</p>
-<img src="/2016/07/28/how-to-use-cordova/logo.png" alt="logo.png" title="">
-<p>聰明的你應該知道其實就是打包 hello\www 裡面的內容</p>
-<p>另外每次輸出都要安裝很麻煩，你可以打開手機的偵錯模式，然後接上你的電腦，之後只要</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova run</div></pre></td></tr></table></figure>
-<p>就可以直接裝到你的手機上</p>
-<p><a href="https://cordova.apache.org/docs/zh-tw/6.x/guide/cli/index.html" target="_blank" rel="external">如果還有不清楚可以去參考官網</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciye0b379000ee0yfibkojxue" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
 
     </footer>
   </div>
@@ -759,9 +718,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -769,9 +728,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 13.33px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
     </div>
   </div>
 
@@ -780,7 +739,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -788,9 +747,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
+          </li>
         
           <li>
             <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
@@ -806,10 +769,6 @@
         
           <li>
             <a href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/14/use-yern/">新一代的js套件管理工具yarn - 取代npm的工具</a>
           </li>
         
       </ul>
@@ -834,7 +793,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 朱信曄<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
