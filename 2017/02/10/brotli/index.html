@@ -3,14 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016/9 | Cain Play It</title>
+  <title>新一代的資料壓縮演算法 Brotli (並套用在Express上) | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cain Play It">
-<meta property="og:url" content="https://cainmaila.github.io/archives/2016/09/index.html">
+  <meta name="description" content="Brotli是Google發布的一套壓縮演算法，目前主要運用在資料傳輸壓縮，由前實習生 Anamaria Cotîrlea，在短短幾個月內做的專案，它就為 Google Play 帶來極大效益，每天能減少大約 1.5PB（即 150 萬 GB）數據量，讓用戶下載及更新應用程式變得更順暢、更節省數據傳輸量。
+Brotli最初發布於2015年，用於網路字型的離線壓縮。Google軟體工程師在2015年">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新一代的資料壓縮演算法 Brotli (並套用在Express上)">
+<meta property="og:url" content="https://cainmaila.github.io/2017/02/10/brotli/index.html">
 <meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="Brotli是Google發布的一套壓縮演算法，目前主要運用在資料傳輸壓縮，由前實習生 Anamaria Cotîrlea，在短短幾個月內做的專案，它就為 Google Play 帶來極大效益，每天能減少大約 1.5PB（即 150 萬 GB）數據量，讓用戶下載及更新應用程式變得更順暢、更節省數據傳輸量。
+Brotli最初發布於2015年，用於網路字型的離線壓縮。Google軟體工程師在2015年">
+<meta property="og:image" content="https://cainmaila.github.io/2017/02/10/brotli/brotli.png">
+<meta property="og:updated_time" content="2017-02-10T09:16:03.235Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cain Play It">
+<meta name="twitter:title" content="新一代的資料壓縮演算法 Brotli (並套用在Express上)">
+<meta name="twitter:description" content="Brotli是Google發布的一套壓縮演算法，目前主要運用在資料傳輸壓縮，由前實習生 Anamaria Cotîrlea，在短短幾個月內做的專案，它就為 Google Play 帶來極大效益，每天能減少大約 1.5PB（即 150 萬 GB）數據量，讓用戶下載及更新應用程式變得更順暢、更節省數據傳輸量。
+Brotli最初發布於2015年，用於網路字型的離線壓縮。Google軟體工程師在2015年">
+<meta name="twitter:image" content="https://cainmaila.github.io/2017/02/10/brotli/brotli.png">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -70,59 +79,137 @@
      data-ad-slot="2223033852"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/09/14/use-thrift-nodejs/" class="archive-article-date">
-  <time datetime="2016-09-14T08:16:02.000Z" itemprop="datePublished">9月 14</time>
+</script><article id="post-brotli" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/10/brotli/" class="article-date">
+  <time datetime="2017-02-10T08:02:04.000Z" itemprop="datePublished">2017-02-10</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/09/14/use-thrift-nodejs/">基於Thrift的Node.js微服物通訊</a>
+    <h1 class="article-title" itemprop="name">
+      新一代的資料壓縮演算法 Brotli (並套用在Express上)
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/09/07/use-webpack-dashboard/" class="archive-article-date">
-  <time datetime="2016-09-07T03:52:30.000Z" itemprop="datePublished">9月 7</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/09/07/use-webpack-dashboard/">讓你更優雅的使用Webpack - webpack-dashboard</a>
-    </h1>
-  
+        <p>Brotli是Google發布的一套壓縮演算法，目前主要運用在資料傳輸壓縮，由前實習生 Anamaria Cotîrlea，在短短幾個月內做的專案，它就為 Google Play 帶來極大效益，每天能減少大約 1.5PB（即 150 萬 GB）數據量，讓用戶下載及更新應用程式變得更順暢、更節省數據傳輸量。</p>
+<p>Brotli最初發布於2015年，用於網路字型的離線壓縮。Google軟體工程師在2015年9月發布了包含通用無失真資料壓縮的Brotli增強版本，特別側重於HTTP壓縮。其中的編碼器被部分覆寫以提高壓縮比，編碼器和解碼器都提高了速度，串流API已被改進，增加更多壓縮品質級別。新版本還展現了跨平台的效能改進，以及減少解碼所需的記憶體。</p>
+<p>與常見的通用壓縮演算法不同，Brotli使用一個預定義的120千位元組字典。該字典包含超過13000個常用單詞、短語和其他子字串，這些來自一個文字和HTML文件的大型語料庫。預定義的演算法可以提升較小檔案的壓縮密度。</p>
+<p>使用brotli取代deflate來對文字檔案壓縮通常可以增加20%的壓縮密度，而壓縮與解壓縮速度則大致不變。</p>
+<h2 id="實作實驗"><a href="#實作實驗" class="headerlink" title="實作實驗"></a>實作實驗</h2><p>以下實際測試比較<br><br>採用 <a href="https://www.npmjs.com/package/brotli" target="_blank" rel="external">node brotli</a></p>
+<p>壓縮3130K的jpg檔</p>
+<table>
+<thead>
+<tr>
+<th>quality</th>
+<th>brotli time</th>
+<th>brotli size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>20.67s</td>
+<td>1892K</td>
+</tr>
+<tr>
+<td>10</td>
+<td>8.97s</td>
+<td>1896K</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1.79s</td>
+<td>1914K</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1.03s</td>
+<td>1946K</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0.98s</td>
+<td>1946K</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.84s</td>
+<td>1947K</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.68s</td>
+<td>1951K</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Express的中間插件"><a href="#Express的中間插件" class="headerlink" title="Express的中間插件"></a>Express的中間插件</h2><p>Brotli目前瀏覽器支援度</p>
+<img src="/2017/02/10/brotli/brotli.png" alt="brotli.png" title="">
+<p>在這之前，你可能採用<strong>compression</strong>，幫你的資料傳輸做gzip壓縮，如果你想採用<strong>Brotli</strong>壓縮，你可以改用以下中間件</p>
+<h4 id="shrink-ray"><a href="#shrink-ray" class="headerlink" title="shrink-ray"></a><a href="https://www.npmjs.com/package/shrink-ray" target="_blank" rel="external">shrink-ray</a></h4><blockquote>
+<p>Windows上，這個包依賴於<strong>node-gyp</strong></p>
+</blockquote>
+<p>shrink-ray支援以下規格</p>
+<ul>
+<li>deflate</li>
+<li>gzip</li>
+<li>brotli</li>
+<li>zopfli (for asynchronous compression of static assets)</li>
+</ul>
+<p>shrink-ray 會幫你選擇適當的數據壓縮方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> shrinkRay = <span class="built_in">require</span>(<span class="string">'shrink-ray'</span>)</div><div class="line"><span class="keyword">var</span> app = express();</div><div class="line">app.use(shrinkRay(&#123;&#125;))</div><div class="line">app.use(express.static(path.join(__dirname, <span class="string">'web'</span>))); <span class="comment">//靜態頁面</span></div><div class="line">app.listen(<span class="number">80</span>);</div></pre></td></tr></table></figure>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://opensource.googleblog.com/2015/09/introducing-brotli-new-compression.html" target="_blank" rel="external">Google開源公告</a></p>
+<p><a href="https://github.com/google/brotli" target="_blank" rel="external">原始代碼</a></p>
+<p><a href="https://datatracker.ietf.org/doc/rfc7932/" target="_blank" rel="external">數據壓縮規格</a></p>
+<p><a href="http://caniuse.com/#search=Brotli" target="_blank" rel="external">瀏覽器相容性</a></p>
+<p><a href="https://blogs.akamai.com/2016/02/understanding-brotlis-potential.html" target="_blank" rel="external">效能比較</a></p>
+<p><a href="http://blog.csdn.net/bjtufang/article/details/49613219" target="_blank" rel="external">Brotli与zip压缩率对比</a></p>
+<p><a href="https://cran.r-project.org/web/packages/brotli/vignettes/brotli-2015-09-22.pdf" target="_blank" rel="external">比較Brotli與各種壓縮算法比較</a></p>
+<p><a href="https://www.smashingmagazine.com/2016/10/next-generation-server-compression-with-brotli/" target="_blank" rel="external">效能比較與Express使用</a></p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="ciyzl7ebg0000dwyfwxbandgj" class="article-share-link">Partager</a>
+      
+        <a href="https://cainmaila.github.io/2017/02/10/brotli/#disqus_thread" class="article-comment-link">Commentaires</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2017/01/26/rollup-web-app-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</div>
+    </a>
   
+</nav>
 
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
         
           <aside id="sidebar">
@@ -235,11 +322,13 @@
 <script>
   var disqus_shortname = 'cainmaila';
   
+  var disqus_url = 'https://cainmaila.github.io/2017/02/10/brotli/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

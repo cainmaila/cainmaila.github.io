@@ -51,9 +51,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
@@ -71,6 +71,121 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+  
+    <article id="post-brotli" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/10/brotli/" class="article-date">
+  <time datetime="2017-02-10T08:02:04.000Z" itemprop="datePublished">2017-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/10/brotli/">新一代的資料壓縮演算法 Brotli (並套用在Express上)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Brotli是Google發布的一套壓縮演算法，目前主要運用在資料傳輸壓縮，由前實習生 Anamaria Cotîrlea，在短短幾個月內做的專案，它就為 Google Play 帶來極大效益，每天能減少大約 1.5PB（即 150 萬 GB）數據量，讓用戶下載及更新應用程式變得更順暢、更節省數據傳輸量。</p>
+<p>Brotli最初發布於2015年，用於網路字型的離線壓縮。Google軟體工程師在2015年9月發布了包含通用無失真資料壓縮的Brotli增強版本，特別側重於HTTP壓縮。其中的編碼器被部分覆寫以提高壓縮比，編碼器和解碼器都提高了速度，串流API已被改進，增加更多壓縮品質級別。新版本還展現了跨平台的效能改進，以及減少解碼所需的記憶體。</p>
+<p>與常見的通用壓縮演算法不同，Brotli使用一個預定義的120千位元組字典。該字典包含超過13000個常用單詞、短語和其他子字串，這些來自一個文字和HTML文件的大型語料庫。預定義的演算法可以提升較小檔案的壓縮密度。</p>
+<p>使用brotli取代deflate來對文字檔案壓縮通常可以增加20%的壓縮密度，而壓縮與解壓縮速度則大致不變。</p>
+<h2 id="實作實驗"><a href="#實作實驗" class="headerlink" title="實作實驗"></a>實作實驗</h2><p>以下實際測試比較<br><br>採用 <a href="https://www.npmjs.com/package/brotli" target="_blank" rel="external">node brotli</a></p>
+<p>壓縮3130K的jpg檔</p>
+<table>
+<thead>
+<tr>
+<th>quality</th>
+<th>brotli time</th>
+<th>brotli size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>20.67s</td>
+<td>1892K</td>
+</tr>
+<tr>
+<td>10</td>
+<td>8.97s</td>
+<td>1896K</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1.79s</td>
+<td>1914K</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1.03s</td>
+<td>1946K</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0.98s</td>
+<td>1946K</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.84s</td>
+<td>1947K</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.68s</td>
+<td>1951K</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Express的中間插件"><a href="#Express的中間插件" class="headerlink" title="Express的中間插件"></a>Express的中間插件</h2><p>Brotli目前瀏覽器支援度</p>
+<img src="/2017/02/10/brotli/brotli.png" alt="brotli.png" title="">
+<p>在這之前，你可能採用<strong>compression</strong>，幫你的資料傳輸做gzip壓縮，如果你想採用<strong>Brotli</strong>壓縮，你可以改用以下中間件</p>
+<h4 id="shrink-ray"><a href="#shrink-ray" class="headerlink" title="shrink-ray"></a><a href="https://www.npmjs.com/package/shrink-ray" target="_blank" rel="external">shrink-ray</a></h4><blockquote>
+<p>Windows上，這個包依賴於<strong>node-gyp</strong></p>
+</blockquote>
+<p>shrink-ray支援以下規格</p>
+<ul>
+<li>deflate</li>
+<li>gzip</li>
+<li>brotli</li>
+<li>zopfli (for asynchronous compression of static assets)</li>
+</ul>
+<p>shrink-ray 會幫你選擇適當的數據壓縮方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">var</span> shrinkRay = <span class="built_in">require</span>(<span class="string">'shrink-ray'</span>)</div><div class="line"><span class="keyword">var</span> app = express();</div><div class="line">app.use(shrinkRay(&#123;&#125;))</div><div class="line">app.use(express.static(path.join(__dirname, <span class="string">'web'</span>))); <span class="comment">//靜態頁面</span></div><div class="line">app.listen(<span class="number">80</span>);</div></pre></td></tr></table></figure>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://opensource.googleblog.com/2015/09/introducing-brotli-new-compression.html" target="_blank" rel="external">Google開源公告</a></p>
+<p><a href="https://github.com/google/brotli" target="_blank" rel="external">原始代碼</a></p>
+<p><a href="https://datatracker.ietf.org/doc/rfc7932/" target="_blank" rel="external">數據壓縮規格</a></p>
+<p><a href="http://caniuse.com/#search=Brotli" target="_blank" rel="external">瀏覽器相容性</a></p>
+<p><a href="https://blogs.akamai.com/2016/02/understanding-brotlis-potential.html" target="_blank" rel="external">效能比較</a></p>
+<p><a href="http://blog.csdn.net/bjtufang/article/details/49613219" target="_blank" rel="external">Brotli与zip压缩率对比</a></p>
+<p><a href="https://cran.r-project.org/web/packages/brotli/vignettes/brotli-2015-09-22.pdf" target="_blank" rel="external">比較Brotli與各種壓縮算法比較</a></p>
+<p><a href="https://www.smashingmagazine.com/2016/10/next-generation-server-compression-with-brotli/" target="_blank" rel="external">效能比較與Express使用</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="ciyzl7ebg0000dwyfwxbandgj" class="article-share-link">Partager</a>
+      
+        <a href="https://cainmaila.github.io/2017/02/10/brotli/#disqus_thread" class="article-comment-link">Commentaires</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-rollup-web-app-3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -127,9 +242,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="ciye4w91h000hvgyf1w6bimyu" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="ciyzl7edt000fdwyfkgxbzd3j" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -180,9 +295,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="ciye4w91e000evgyfte6bduwc" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="ciyzl7edg000bdwyfqt9r999u" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -248,9 +363,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciye4w91k000ivgyfxpkc92z4" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="ciyzl7edz000hdwyfe2i6av3x" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li></ul>
@@ -302,9 +417,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciye4w90h0001vgyfcg5pw7tz" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="ciyzl7ee3000kdwyf2jw31d55" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li></ul>
@@ -371,9 +486,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciye4w91n000kvgyfu6gzo606" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="ciyzl7eea000pdwyfxnwq1e74" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -424,9 +539,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciye4w925000svgyfdxk042o7" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="ciyzl7eg1001hdwyf85x39yoq" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
@@ -487,9 +602,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciye4w9110008vgyfz7k44k77" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="ciyzl7ed60007dwyfua8hnakk" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
@@ -571,9 +686,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciye4w91x000pvgyfqb26mobq" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="ciyzl7efx001gdwyfsawx3nda" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
@@ -620,71 +735,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciye4w91u000nvgyf75l8653z" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="ciyzl7eef000rdwyfieb9bpz9" class="article-share-link">Partager</a>
       
-        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Commentaires</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-use-leedian-jsdoc" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/05/use-leedian-jsdoc/" class="article-date">
-  <time datetime="2016-08-05T11:16:30.000Z" itemprop="datePublished">2016-08-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/05/use-leedian-jsdoc/">利用Jsdoc幫Javascript產出漂亮的文檔</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>利用Jsdoc幫自己寫的js庫產生文件真的是很方便，只要你在寫code時，依照jsdoc規範寫好註解後，就可以幫你產生漂亮的文檔。</p>
-<p>自己本身開發是用<strong>Sublime Text 3</strong>, 可以搭配安裝<strong>Doc​Blockr</strong>這個Sublime packages 當可以幫你在寫code時做好符合jsdoc規範的版型。</p>
-<p>安裝與使用方式請至<a href="https://packagecontrol.io/packages/DocBlockr" target="_blank" rel="external">Doc​Blockr</a>官網都有詳細解說</p>
-<p>大致上就是在code上面輸入 /** 後按下 tab 見就會幫你產生註解版型</p>
-<img src="/2016/08/05/use-leedian-jsdoc/c1.gif" alt="c1.gif" title="">
-<p>原本自己搭配grunt-jsdoc使用，一直都很順利，不過最近公司專案都統一使用gulp，所以改用了 gulp-jsdoc ，但是發現不支援新的 Jsdoc3 語法，查了一下發現可以另外使用 gulp-jsdoc3。</p>
-<h4 id="gulp-jsdoc3"><a href="#gulp-jsdoc3" class="headerlink" title="gulp-jsdoc3"></a><a href="https://www.npmjs.com/package/gulp-jsdoc3" target="_blank" rel="external">gulp-jsdoc3</a></h4><h4 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h4><p>安裝所需掛件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm i gulp-cli -g</div><div class="line">npm i gulp --save-dev</div><div class="line">npm i gulp-jsdoc3 --save-dev</div></pre></td></tr></table></figure></p>
-<p>加上你的 <strong>gulpfile.js</strong>檔案<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</div><div class="line"><span class="keyword">var</span> jsdoc = <span class="built_in">require</span>(<span class="string">'gulp-jsdoc3'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'doc'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</div><div class="line">    gulp.src([<span class="string">'./README.md'</span>, <span class="string">'./src/*.js'</span>], &#123; read: <span class="literal">false</span> &#125;)</div><div class="line">        .pipe(jsdoc(cb));</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>gulp.src後面傳入的陣列<strong>README.md</strong>是文件檔的首頁內容，可以把你要製作文件檔案填入陣列。</p>
-<p>輸出文檔<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gulp doc</div></pre></td></tr></table></figure></p>
-<p>之後你應該可以看到文件資料夾</p>
-<p>基本上<strong>gulp-jsdoc3</strong>裡面有綁定一個<strong>ink-docstrap</strong>版型，說真的我不是很喜歡這個樣式，jsdoc有很多現成的樣板可以挑選，我自己是喜歡<strong>jaguarjs-jsdoc</strong>這個版型</p>
-<h4 id="jaguarjs-jsdoc"><a href="#jaguarjs-jsdoc" class="headerlink" title="jaguarjs-jsdoc"></a><a href="http://jaguarjs.com/doc/" target="_blank" rel="external">jaguarjs-jsdoc</a></h4><p>雖說jsdoc3可以自己定義樣板，不過我使用<strong>gulp-jsdoc3</strong>卻一直無法設定更變樣式，就算我自訂義了conf.json，也頂多變json成預設樣式，(如果有人知道怎麼設定再麻煩告訴我)</p>
-<p>最後乾脆直接把<strong>gulp-jsdoc3</strong>定義的預設版型改掉，不過每開一個專案就改一次真的很煩，最後乾脆整個再包一個npm掛件，這樣使用時就不用自己手動去換，有需要的人可以去npm下載包裝好的</p>
-<h4 id="leedian-jsdoc"><a href="#leedian-jsdoc" class="headerlink" title="leedian-jsdoc "></a><a href="https://www.npmjs.com/package/leedian-jsdoc" target="_blank" rel="external">leedian-jsdoc </a></h4><p>使用方式跟<strong>gulp-jsdoc3一樣</strong>，只是預設版型改成我喜歡的<strong>jaguarjs-jsdoc</strong>。</p>
-<p>另外當然也是可以自訂<strong>jaguarjs-jsdoc</strong>的版面設定<br>比方開一個<strong>conf.json</strong><br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"tags"</span>: &#123;</div><div class="line">        <span class="attr">"allowUnknownTags"</span>: <span class="literal">true</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"source"</span>: &#123;</div><div class="line">        <span class="attr">"includePattern"</span>: <span class="string">".+\\.js(doc)?$"</span>,</div><div class="line">        <span class="attr">"excludePattern"</span>: <span class="string">"(^|\\/|\\\\)_"</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"opts"</span>: &#123;</div><div class="line">        <span class="attr">"recurse"</span>: <span class="literal">true</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"templates"</span>: &#123;</div><div class="line">        <span class="attr">"cleverLinks"</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">"monospaceLinks"</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">"default"</span>: &#123;</div><div class="line">            <span class="attr">"outputSourceFiles"</span>: <span class="literal">true</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">"applicationName"</span>: <span class="string">"My SDK"</span>,</div><div class="line">        <span class="attr">"openGraph"</span>: &#123;&#125;,</div><div class="line">        <span class="attr">"meta"</span>: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>你的 <strong>gulpfile.js</strong>檔案<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</div><div class="line"><span class="keyword">var</span> jsdoc = <span class="built_in">require</span>(<span class="string">'leedian-jsdoc'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'doc'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> config = <span class="built_in">require</span>(<span class="string">'./conf.json'</span>);</div><div class="line">    gulp.src([<span class="string">'./README.md'</span>, <span class="string">'./src/*.js'</span>], &#123; read: <span class="literal">false</span> &#125;)</div><div class="line">        .pipe(jsdoc(config, cb));</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>最後附上一些Jsdoc規範</p>
-<h4 id="Jsdoc中文文檔"><a href="#Jsdoc中文文檔" class="headerlink" title="Jsdoc中文文檔"></a><a href="http://www.css88.com/doc/jsdoc/index.html" target="_blank" rel="external">Jsdoc中文文檔</a></h4><p>有了這些你也可以產出漂亮又專業的文件</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciye4w91p000lvgyf8yfagc0r" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jsdoc/">jsdoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
 
     </footer>
   </div>
@@ -719,9 +775,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -729,9 +785,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
     </div>
   </div>
 
@@ -740,7 +796,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -748,9 +804,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/02/10/brotli/">新一代的資料壓縮演算法 Brotli (並套用在Express上)</a>
+          </li>
         
           <li>
             <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
@@ -766,10 +826,6 @@
         
           <li>
             <a href="/2016/11/08/express-ssl/">在你的Express加上https(SSL)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/18/sublime-vue-template/">Sublime Text 整理 vue Template</a>
           </li>
         
       </ul>
@@ -794,7 +850,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 朱信曄<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
