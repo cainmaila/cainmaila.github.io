@@ -72,6 +72,55 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-use-webpack-dashboard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/07/use-webpack-dashboard/" class="article-date">
+  <time datetime="2016-09-07T03:52:30.000Z" itemprop="datePublished">2016-09-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/07/use-webpack-dashboard/">讓你更優雅的使用Webpack - webpack-dashboard</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>看膩了webpack的建構輸出嗎?可以考慮試試加上<a href="https://github.com/FormidableLabs/webpack-dashboard" target="_blank" rel="external"><strong>webpack-dashboard</strong></a>讓你的wedpack輸出更優雅!<br><br>如果你有在用webpack-dev-servery作為測試服務的話，你應該會更喜歡它!</p>
+<p><strong>原來的webpack輸出</strong><br><img src="/2016/09/07/use-webpack-dashboard/qa1.png" alt="qa1.png" title=""></p>
+<p><strong>加上webpack-dashboard後的輸出</strong><br><img src="/2016/09/07/use-webpack-dashboard/qa2.png" alt="qa2.png" title=""></p>
+<p>是不是感覺清楚清新很多!</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>首先安裝<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install webpack-dashboard --save-dev</div></pre></td></tr></table></figure></p>
+<p>然後在你的<strong>webpack.config.js</strong>中加上<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Dashboard = <span class="built_in">require</span>(<span class="string">'webpack-dashboard'</span>);</div><div class="line"><span class="keyword">var</span> DashboardPlugin = <span class="built_in">require</span>(<span class="string">'webpack-dashboard/plugin'</span>);</div><div class="line"><span class="keyword">var</span> dashboard = <span class="keyword">new</span> Dashboard();</div></pre></td></tr></table></figure></p>
+<p>最後添加這個<strong>plugins</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plugins: [</div><div class="line">  <span class="keyword">new</span> DashboardPlugin(dashboard.setData)</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>試著啟動你的webpack-dev-server，再加上<strong>quiet</strong>參數(主要是去除多餘的輸出)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">webpack-dev-server --quiet</div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/FormidableLabs/webpack-dashboard" target="_blank" rel="external"><strong>webpack-dashboard</strong></a>目前還處於初期階段，有興趣的人可以試著玩看看。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="cizzhlmdw000pd8yfhj7j00co" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-use-leedian-jsdoc" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/08/05/use-leedian-jsdoc/" class="article-date">
@@ -117,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="ciyzm23vj000og8yfak21g1i3" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="cizzhlmdi000kd8yficjif9tw" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -226,7 +275,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="ciyzm23v0000fg8yfb6o27tg7" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="cizzhlmd9000hd8yfu29rhi5n" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -279,7 +328,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="ciyzm23uq000ag8yfz4o1ztnf" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cizzhlmcu0008d8yf6k3kqlw4" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -328,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="ciyzm23ul0006g8yf6re071fy" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="cizzhlmch0003d8yf7o189mtx" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -377,7 +426,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="ciyzm23uf0004g8yfjv2516xg" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cizzhlmc50000d8yf0liqkn6c" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -431,7 +480,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="ciyzm23uy000dg8yf8b0igb85" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cizzhlmcq0006d8yf41g6v2hp" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -497,7 +546,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="ciyzm23tv0000g8yf2nk7ykxt" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cizzhlmck0004d8yffu1ifw2p" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -539,7 +588,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -549,7 +598,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
     </div>
   </div>
 
@@ -558,7 +607,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -569,6 +618,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/03/07/mobile-page/">手機網頁開發設計注意事項</a>
+          </li>
         
           <li>
             <a href="/2017/02/10/brotli/">在Express上使用新一代的資料壓縮演算法 - Brotli</a>
@@ -584,10 +637,6 @@
         
           <li>
             <a href="/2017/01/25/rollup-web-app/">建立你的前端開發環境(一) - Rollup</a>
-          </li>
-        
-          <li>
-            <a href="/2016/11/08/express-ssl/">在你的Express加上https(SSL)</a>
           </li>
         
       </ul>
