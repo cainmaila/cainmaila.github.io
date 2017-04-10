@@ -72,6 +72,72 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-node-cli" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/node-cli/" class="article-date">
+  <time datetime="2017-04-10T11:33:06.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/10/node-cli/">使用Nodejs開發自己的Cli命令工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>你可以使用Nodejs開發自己的命令工具，例如 Grunt，Webpack，react-cli，vue-cli….均是此類的服務。</p>
+<h2 id="實作一個最命令程序"><a href="#實作一個最命令程序" class="headerlink" title="實作一個最命令程序"></a>實作一個最命令程序</h2><p>例如建立一個node專案(一個資料夾，執行過 npm init..)，編寫一個 app.js 內容如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'hello my cli !'</span>)</div></pre></td></tr></table></figure></p>
+<p>一般而言，要執行這個node程序，你可以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">node app.js</div><div class="line">//畫面輸出 =&gt; hello my cli !</div></pre></td></tr></table></figure></p>
+<p>如果需要將以上程序建立成命列，你可以這樣做<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'hello my cli !'</span>)</div></pre></td></tr></table></figure></p>
+<p>加上第一行指定為 node 腳本</p>
+<p>在你的 package.json 加上 bin 屬性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;bin&quot;: &#123;</div><div class="line">    &quot;my-cli&quot;: &quot;./app.js&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>告知系統執行 <strong>my-cli</strong> 後，同等執行 <strong>node ./app.js</strong></p>
+<p>接下來執行以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm i -g</div><div class="line">npm link</div></pre></td></tr></table></figure></p>
+<p>如果你有安裝其他掛件，你需要先把掛件安裝在全域</p>
+<p>最後利用 <strong>npm link</strong> 把你的命令增加在系統參數中</p>
+<p>以後你在任何地方都可以直接執行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">my-cli</div><div class="line">//畫面輸出 =&gt; hello my cli !</div></pre></td></tr></table></figure></p>
+<p>以上步驟，你已經實現了你的命令工具，當然實際上，你可以在你的 app.js 中實現你要作的事，例如自動化新增你的專案版型,或者自動化一些事務..</p>
+<h2 id="使用-commander-為你的命令工具增加功能性介面"><a href="#使用-commander-為你的命令工具增加功能性介面" class="headerlink" title="使用 commander 為你的命令工具增加功能性介面"></a>使用 commander 為你的命令工具增加功能性介面</h2><p><a href="https://www.npmjs.com/package/commander" target="_blank" rel="external">commander</a> 提供你建立完整的命令工具版型</p>
+<p>可以很快速的為你的命令工具建立取得參數，建立命令，說明等等</p>
+<p>首先在專案中安裝 commander<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i commander</div></pre></td></tr></table></figure></p>
+<p>撰寫app.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>)</div><div class="line"></div><div class="line">program</div><div class="line">    .version(<span class="string">'0.0.1'</span>) <span class="comment">// 可下 -V 查詢版本</span></div><div class="line">    .description(<span class="string">'這裡可以是一個說明'</span>)</div><div class="line">    .option(<span class="string">'-a, --aArgv'</span>, <span class="string">'新增a參數'</span>) <span class="comment">// 可下 -a 設定 program.aArgv 為 true</span></div><div class="line">    .option(<span class="string">'-b, --bArgv'</span>, <span class="string">'新增b參數'</span>) <span class="comment">// 可下 -b 設定 program.bArgv 為 true</span></div><div class="line">    .option(<span class="string">'-c, --cArgv [type]'</span>, <span class="string">'新增c變數內容'</span>, <span class="string">'test123'</span>) <span class="comment">// 可下 -c 帶內容 設定 program.bArgv 預設值為 test123</span></div><div class="line"></div><div class="line"><span class="comment">//定義一個 deploy 命令，並傳入name參數</span></div><div class="line">program</div><div class="line">    .command(<span class="string">'deploy &lt;name&gt;'</span>)</div><div class="line">    .description(<span class="string">'定義一個命令'</span>)</div><div class="line">    .action(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Deploying "%s"'</span>, name)</div><div class="line">    &#125;)</div><div class="line"></div><div class="line">program.parse(process.argv)</div><div class="line"></div><div class="line"><span class="comment">//列印出各個傳入參數</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s aArgv'</span>, program.aArgv)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s bArgv'</span>, program.bArgv)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s cArgv'</span>, program.cArgv)</div></pre></td></tr></table></figure></p>
+<p>建立命令後，你可以直接執行以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//查看版本</div><div class="line">my-cli -V </div><div class="line">//查看說明 </div><div class="line">my-cli -h </div><div class="line">//傳入 a=<span class="literal">true</span> b=<span class="literal">true</span> c=<span class="built_in">test</span>456</div><div class="line">my-cli -<span class="_">-a</span>Argv -bArgv -cArgv <span class="built_in">test</span>456 </div><div class="line">//同等</div><div class="line">my-cli -ab -c <span class="built_in">test</span>456</div><div class="line">//執行命令</div><div class="line">my-cli deploy myname</div></pre></td></tr></table></figure></p>
+<h2 id="分享你的-cli-工具"><a href="#分享你的-cli-工具" class="headerlink" title="分享你的 cli 工具"></a>分享你的 cli 工具</h2><p>如果你希望把開發後的命令分享給其他人，可以把專案 publish 至 npm</p>
+<ol>
+<li>首先把你的專案發佈至 github (package.json 中記得填寫 “repository”: “<a href="https://github.com/xxxx/xxxxx.git" target="_blank" rel="external">https://github.com/xxxx/xxxxx.git</a>“)</li>
+<li>註冊一個<a href="https://www.npmjs.com/" target="_blank" rel="external">npm</a>帳號</li>
+<li>專案中執行<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm login  //登入</div><div class="line">npm publish //分享至npm</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>以後只要全域安裝你的命令，就可以直接執行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i -g your-cli</div></pre></td></tr></table></figure></p>
+<p>範例專案<br><a href="https://github.com/cainmaila/test-cli" target="_blank" rel="external">https://github.com/cainmaila/test-cli</a></p>
+<img src="/2017/04/10/node-cli/cli.jpg" alt="cli.jpg" title="">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cj1c3p0vq0008x8yfypgpmawk" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2017/04/10/node-cli/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mobile-page" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/07/mobile-page/" class="article-date">
@@ -117,7 +183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cizzhlmd7000ed8yfe094pwd6" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cj1c3p0x5000wx8yfmz0sn6le" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/03/07/mobile-page/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -232,7 +298,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cizzhlmca0001d8yf6ycn28e7" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cj1c3p0ux0000x8yfjm0gwj1q" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/02/10/brotli/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -301,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cizzhlmd4000dd8yf3uf6k9zi" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cj1c3p0w6000gx8yfbta54qvn" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -354,7 +420,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cizzhlmcw000ad8yf0wtojhqn" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cj1c3p0w3000dx8yfhvb0ufll" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -422,7 +488,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cizzhlmfi001md8yfftnxhh5j" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cj1c3p0wc000kx8yfg7twru2n" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -476,7 +542,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cizzhlmdn000od8yf4vu090l0" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cj1c3p0v30001x8yf47lna5nx" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -545,7 +611,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cizzhlmfd001jd8yfy3tzbi0v" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cj1c3p0wd000lx8yfs7y7mprz" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -598,7 +664,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="cizzhlmfg001kd8yf5vpzp6z2" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="cj1c3p0x2000vx8yfygu9pq11" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -661,96 +727,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="cizzhlmdb000id8yft7vkzx82" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="cj1c3p0wg000ox8yfcf2g4214" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-use-thrift-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/14/use-thrift-nodejs/" class="article-date">
-  <time datetime="2016-09-14T08:16:02.000Z" itemprop="datePublished">2016-09-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/14/use-thrift-nodejs/">基於Thrift的Node.js微服物通訊</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近公司開始要把各服務器的通訊方法改為Thrift，開始試著利用Thrift實作Node.js的通訊架構。<br><br><a href="https://thrift.apache.org" target="_blank" rel="external">Apache Thrift</a> 是 Facebook 實現的一種高效的、支持多種編程語言的遠程服務調用的框架，傳輸數據採用二進制格式，相對 XML 和 JSON 體積更小，對於高並發、大數據量和多語言的環境更有優勢。<br><br>講白了就是資料傳輸速度比傳統的Rest架構快非常多。可參考這篇<a href="http://nordicapis.com/microservice-showdown-rest-vs-soap-vs-apache-thrift-and-why-it-matters/" target="_blank" rel="external">Microservice Showdown – REST vs SOAP vs Apache Thrift (And Why It Matters)</a><br><br>這玩意很單純的利用tcp去傳輸資料，當然使省去很多瑣碎的多餘資料，省資源，效率更高，很適合用在整合散部各處的node.js微服物器。<br><br>但是Thrift也不是沒有缺點，省去了很多瑣碎的手續，相對資料的安全性就會降低，首先一大問題就是tcp連線可能隨時會中斷，所以要你要想要作長連線，最好還是乖乖地使用標準的socket協定，基本上還是建議使用在網路比較穩定的區網內服務通訊。<br><br>如果你有一個大型服務，需要收集(或請求)分散各處的微型服務，而這些服務都在同一個主機或是穩定的網路區域，就很適合利用Thrift作為通訊架構。</p>
-<img src="/2016/09/14/use-thrift-nodejs/cc.png" alt="cc.png" title="">
-<p>以下實作利用Thrift再在Node.js服務器中通訊的方法</p>
-<ol>
-<li><p>首先建立一個nodejs專案，然後安裝thrift掛件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i thrift</div></pre></td></tr></table></figure>
-</li>
-<li><p>建立一個介面定義檔</p>
-</li>
-</ol>
-<p>Thrift其實最棒的地方就是<a href="https://thrift.apache.org/lib/" target="_blank" rel="external">支援很多語言</a>，你只要寫一個.thrift定義檔，就可以幫你輸出各種語言的介面函示庫，c、java、php、ruby、python、js等等主流語言。</p>
-<p>先做一個基本的定義檔 demoApi.thrift<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 介面定義檔</div><div class="line"> */</div><div class="line"></div><div class="line">/* 各語言命名空間 這邊不用改*/</div><div class="line">namespace cpp demoApi</div><div class="line">namespace d demoApi</div><div class="line">namespace java demoApi</div><div class="line">namespace php demoApi</div><div class="line">namespace perl demoApi</div><div class="line">namespace haxe demoApi</div><div class="line"></div><div class="line">/* 定義呼叫的方法介面與參數 */</div><div class="line">service DemoApi &#123;</div><div class="line">	void apiCall() /* 定義一個apiCall方法 */</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>這裡定義一個 DemoApi 的服務，這個服務裡面有一個apiCall方法，apiCall沒有接受參數，也沒有回傳值，所以前面加個viod。</p>
-<ol>
-<li>編譯介面檔</li>
-</ol>
-<p>demoApi.thrift 只是一個，定義文件，必須透過編譯器再編譯成各種語言的介面函示庫。</p>
-<p><a href="https://thrift.apache.org/download" target="_blank" rel="external">首先下載編譯器</a></p>
-<p>下載後編譯你的demoApi.thrift定義檔，語法如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thrift --gen &lt;language&gt; &lt;Thrift filename&gt;</div></pre></td></tr></table></figure></p>
-<p>以下針對node.js作編譯<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hrift -r --gen js:node demoApi.thrift</div></pre></td></tr></table></figure></p>
-<p>編譯完成後產生介面函示庫gen-nodejs資料夾，這個就是node.js的介面函示庫。目前裡面應該會有兩隻檔案<br><strong>DemoApi.js</strong> 方法介面的定義<br><strong>demoApi_types.js</strong> 結構的定義(目前我們沒有定義任何結構)</p>
-<p>4.開始撰寫nodejs各通訊端點</p>
-<p>介面函示庫好了後就可以開始使用了，首先寫Server端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> thrift = <span class="built_in">require</span>(<span class="string">"thrift"</span>);</div><div class="line"><span class="comment">/*</span></div><div class="line"> * 匯入 thrift產生的函式庫</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> DemoApi = <span class="built_in">require</span>(<span class="string">"./gen-nodejs/DemoApi"</span>);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 定義一個 DemoApi 服務器</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> server = thrift.createServer(DemoApi, &#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 最單純的通訊，呼叫定義的apiCall方法，定義的方法請參照demo.thrift</div><div class="line">     */</div><div class="line">    apiCall: <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"apiCall()"</span>);</div><div class="line">        result(<span class="literal">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 偵聽8080 port</div><div class="line"> */</div><div class="line">server.listen(<span class="number">8080</span>);</div></pre></td></tr></table></figure></p>
-<p>再來是Client端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> thrift = <span class="built_in">require</span>(<span class="string">"thrift"</span>);</div><div class="line"><span class="comment">/*</span></div><div class="line"> * 匯入 thrift產生的函式庫</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> DemoApi = <span class="built_in">require</span>(<span class="string">"./gen-nodejs/DemoApi"</span>);</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通訊協定定義</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> transport = thrift.TBufferedTransport();</div><div class="line"><span class="keyword">var</span> protocol = thrift.TBinaryProtocol();</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 連線</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> connection = thrift.createConnection(<span class="string">"localhost"</span>, <span class="number">8080</span>, &#123;</div><div class="line">    transport: transport,</div><div class="line">    protocol: protocol</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 連線錯誤事件</div><div class="line"> */</div><div class="line">connection.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.error(err);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 打開一個DemoApi服務通訊流程</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> client = thrift.createClient(DemoApi, connection);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 最單純的通訊，呼叫定義的apiCall方法，定義的方法請參照demo.thrift</div><div class="line"> */</div><div class="line">client.apiCall(<span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'apiCall()'</span>);</div><div class="line">    connection.end(); <span class="comment">//事情都作完記得關閉連線，很重要!!!</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>好了之後你可以分別執行server與client，順利的話應該可以看到執行的console.log結果</p>
-<p>接下來我們試著傳送一些資料，目前Thrift可以定義的類型如下</p>
-<ul>
-<li>bool</li>
-<li>i8 (byte)</li>
-<li>i16(16位元整數)</li>
-<li>i32(32位元整數)</li>
-<li>i64(64位元整數)</li>
-<li>double(64位元浮點數)</li>
-<li>string(字串)</li>
-<li>binary(byte array)</li>
-</ul>
-<p>我們在定義檔demoApi.thrift上加上一個新的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">service DemoApi &#123;</div><div class="line">    void apiCall(), /* 逗號隔開 */</div><div class="line">    i32 add(1:i32 num1, 2:i32 num2)  /* 新增add這個方法 */</div></pre></td></tr></table></figure></p>
-<p><strong>add</strong>這個方法傳入兩個32位元整數，最前面的i32代表回傳的型態</p>
-<p>加上後記得再編譯一次<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hrift -r --gen js:node demoApi.thrift</div></pre></td></tr></table></figure></p>
-<p>Servre端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">apiCall: <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"apiCall()"</span>);</div><div class="line">        result(<span class="literal">null</span>);</div><div class="line">    &#125;,</div><div class="line">add: <span class="function"><span class="keyword">function</span> (<span class="params">n1, n2, result</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"add("</span>, n1, <span class="string">","</span>, n2, <span class="string">")"</span>);</div><div class="line">        result(<span class="literal">null</span>, n1 + n2);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>Client端<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">client.add(<span class="number">1</span>, <span class="number">1</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"1+1="</span> + response);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>這個方法是把傳入的兩個數字相加後再return回去。</p>
-<p>再次執行後應該可以看到對應的結果!</p>
-<h4 id="其他資料型態與完整範例請至我的gitlab"><a href="#其他資料型態與完整範例請至我的gitlab" class="headerlink" title="其他資料型態與完整範例請至我的gitlab"></a>其他資料型態與完整範例請至我的gitlab</h4><p><a href="https://gitlab.com/cainplay/Thrift_demo/tree/master" target="_blank" rel="external">https://gitlab.com/cainplay/Thrift_demo</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="cizzhlmdj000md8yf04i714dy" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thrift/">thrift</a></li></ul>
 
     </footer>
   </div>
@@ -787,7 +769,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -797,7 +779,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
     </div>
   </div>
 
@@ -806,7 +788,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -817,6 +799,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/04/10/node-cli/">使用Nodejs開發自己的Cli命令工具</a>
+          </li>
         
           <li>
             <a href="/2017/03/07/mobile-page/">手機網頁開發設計注意事項</a>
@@ -832,10 +818,6 @@
         
           <li>
             <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
-          </li>
-        
-          <li>
-            <a href="/2017/01/25/rollup-web-app/">建立你的前端開發環境(一) - Rollup</a>
           </li>
         
       </ul>

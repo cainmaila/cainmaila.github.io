@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Nodejs開發自己的Cli命令工具 | Cain Play It</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="你可以使用Nodejs開發自己的命令工具，例如 Grunt，Webpack，react-cli，vue-cli….均是此類的服務。
+實作一個最命令程序例如建立一個node專案(一個資料夾，執行過 npm init..)，編寫一個 app.js 內容如下1console.log(&apos;hello my cli !&apos;)
+一般而言，要執行這個node程序，你可以下12node app.js//畫面輸出 =&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Nodejs開發自己的Cli命令工具">
+<meta property="og:url" content="https://cainmaila.github.io/2017/04/10/node-cli/index.html">
+<meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="你可以使用Nodejs開發自己的命令工具，例如 Grunt，Webpack，react-cli，vue-cli….均是此類的服務。
+實作一個最命令程序例如建立一個node專案(一個資料夾，執行過 npm init..)，編寫一個 app.js 內容如下1console.log(&apos;hello my cli !&apos;)
+一般而言，要執行這個node程序，你可以下12node app.js//畫面輸出 =&amp;">
+<meta property="og:image" content="https://cainmaila.github.io/2017/04/10/node-cli/cli.jpg">
+<meta property="og:updated_time" content="2017-04-10T12:34:31.386Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Nodejs開發自己的Cli命令工具">
+<meta name="twitter:description" content="你可以使用Nodejs開發自己的命令工具，例如 Grunt，Webpack，react-cli，vue-cli….均是此類的服務。
+實作一個最命令程序例如建立一個node專案(一個資料夾，執行過 npm init..)，編寫一個 app.js 內容如下1console.log(&apos;hello my cli !&apos;)
+一般而言，要執行這個node程序，你可以下12node app.js//畫面輸出 =&amp;">
+<meta name="twitter:image" content="https://cainmaila.github.io/2017/04/10/node-cli/cli.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cain Play It</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的碼農備忘錄</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cainmaila.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- cainmaila.github.io -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-2030406205508697"
+     data-ad-slot="2223033852"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script><article id="post-node-cli" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/node-cli/" class="article-date">
+  <time datetime="2017-04-10T11:33:06.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Nodejs開發自己的Cli命令工具
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>你可以使用Nodejs開發自己的命令工具，例如 Grunt，Webpack，react-cli，vue-cli….均是此類的服務。</p>
+<h2 id="實作一個最命令程序"><a href="#實作一個最命令程序" class="headerlink" title="實作一個最命令程序"></a>實作一個最命令程序</h2><p>例如建立一個node專案(一個資料夾，執行過 npm init..)，編寫一個 app.js 內容如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'hello my cli !'</span>)</div></pre></td></tr></table></figure></p>
+<p>一般而言，要執行這個node程序，你可以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">node app.js</div><div class="line">//畫面輸出 =&gt; hello my cli !</div></pre></td></tr></table></figure></p>
+<p>如果需要將以上程序建立成命列，你可以這樣做<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'hello my cli !'</span>)</div></pre></td></tr></table></figure></p>
+<p>加上第一行指定為 node 腳本</p>
+<p>在你的 package.json 加上 bin 屬性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;bin&quot;: &#123;</div><div class="line">    &quot;my-cli&quot;: &quot;./app.js&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>告知系統執行 <strong>my-cli</strong> 後，同等執行 <strong>node ./app.js</strong></p>
+<p>接下來執行以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm i -g</div><div class="line">npm link</div></pre></td></tr></table></figure></p>
+<p>如果你有安裝其他掛件，你需要先把掛件安裝在全域</p>
+<p>最後利用 <strong>npm link</strong> 把你的命令增加在系統參數中</p>
+<p>以後你在任何地方都可以直接執行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">my-cli</div><div class="line">//畫面輸出 =&gt; hello my cli !</div></pre></td></tr></table></figure></p>
+<p>以上步驟，你已經實現了你的命令工具，當然實際上，你可以在你的 app.js 中實現你要作的事，例如自動化新增你的專案版型,或者自動化一些事務..</p>
+<h2 id="使用-commander-為你的命令工具增加功能性介面"><a href="#使用-commander-為你的命令工具增加功能性介面" class="headerlink" title="使用 commander 為你的命令工具增加功能性介面"></a>使用 commander 為你的命令工具增加功能性介面</h2><p><a href="https://www.npmjs.com/package/commander" target="_blank" rel="external">commander</a> 提供你建立完整的命令工具版型</p>
+<p>可以很快速的為你的命令工具建立取得參數，建立命令，說明等等</p>
+<p>首先在專案中安裝 commander<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i commander</div></pre></td></tr></table></figure></p>
+<p>撰寫app.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>)</div><div class="line"></div><div class="line">program</div><div class="line">    .version(<span class="string">'0.0.1'</span>) <span class="comment">// 可下 -V 查詢版本</span></div><div class="line">    .description(<span class="string">'這裡可以是一個說明'</span>)</div><div class="line">    .option(<span class="string">'-a, --aArgv'</span>, <span class="string">'新增a參數'</span>) <span class="comment">// 可下 -a 設定 program.aArgv 為 true</span></div><div class="line">    .option(<span class="string">'-b, --bArgv'</span>, <span class="string">'新增b參數'</span>) <span class="comment">// 可下 -b 設定 program.bArgv 為 true</span></div><div class="line">    .option(<span class="string">'-c, --cArgv [type]'</span>, <span class="string">'新增c變數內容'</span>, <span class="string">'test123'</span>) <span class="comment">// 可下 -c 帶內容 設定 program.bArgv 預設值為 test123</span></div><div class="line"></div><div class="line"><span class="comment">//定義一個 deploy 命令，並傳入name參數</span></div><div class="line">program</div><div class="line">    .command(<span class="string">'deploy &lt;name&gt;'</span>)</div><div class="line">    .description(<span class="string">'定義一個命令'</span>)</div><div class="line">    .action(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'Deploying "%s"'</span>, name)</div><div class="line">    &#125;)</div><div class="line"></div><div class="line">program.parse(process.argv)</div><div class="line"></div><div class="line"><span class="comment">//列印出各個傳入參數</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s aArgv'</span>, program.aArgv)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s bArgv'</span>, program.bArgv)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'  - %s cArgv'</span>, program.cArgv)</div></pre></td></tr></table></figure></p>
+<p>建立命令後，你可以直接執行以下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//查看版本</div><div class="line">my-cli -V </div><div class="line">//查看說明 </div><div class="line">my-cli -h </div><div class="line">//傳入 a=<span class="literal">true</span> b=<span class="literal">true</span> c=<span class="built_in">test</span>456</div><div class="line">my-cli -<span class="_">-a</span>Argv -bArgv -cArgv <span class="built_in">test</span>456 </div><div class="line">//同等</div><div class="line">my-cli -ab -c <span class="built_in">test</span>456</div><div class="line">//執行命令</div><div class="line">my-cli deploy myname</div></pre></td></tr></table></figure></p>
+<h2 id="分享你的-cli-工具"><a href="#分享你的-cli-工具" class="headerlink" title="分享你的 cli 工具"></a>分享你的 cli 工具</h2><p>如果你希望把開發後的命令分享給其他人，可以把專案 publish 至 npm</p>
+<ol>
+<li>首先把你的專案發佈至 github (package.json 中記得填寫 “repository”: “<a href="https://github.com/xxxx/xxxxx.git" target="_blank" rel="external">https://github.com/xxxx/xxxxx.git</a>“)</li>
+<li>註冊一個<a href="https://www.npmjs.com/" target="_blank" rel="external">npm</a>帳號</li>
+<li>專案中執行<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm login  //登入</div><div class="line">npm publish //分享至npm</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>以後只要全域安裝你的命令，就可以直接執行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i -g your-cli</div></pre></td></tr></table></figure></p>
+<p>範例專案<br><a href="https://github.com/cainmaila/test-cli" target="_blank" rel="external">https://github.com/cainmaila/test-cli</a></p>
+<img src="/2017/04/10/node-cli/cli.jpg" alt="cli.jpg" title="">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cj1c3p0vq0008x8yfypgpmawk" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2017/04/10/node-cli/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/07/mobile-page/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">手機網頁開發設計注意事項</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap" id="cain">
+	<h3 class="widget-title">作者資訊</h3>
+		<div class="head">
+			<img src="/css/images/cain.jpg" alt="">
+		</div>
+	<div class="widget">
+		朱信曄<br>
+		律典(上海)信息技术有限公司<br>
+		Senior Web Programer<br>
+	</div>
+</div>
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/10/node-cli/">使用Nodejs開發自己的Cli命令工具</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/mobile-page/">手機網頁開發設計注意事項</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/10/brotli/">在Express上使用新一代的資料壓縮演算法 - Brotli</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- cainplay_rig -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-2030406205508697"
+     data-ad-slot="4048382650"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 朱信曄<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'cainmaila';
+  
+  var disqus_url = 'https://cainmaila.github.io/2017/04/10/node-cli/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
