@@ -3,27 +3,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>nodejs使用redis緩存key值 | Cain Play It</title>
+  <title>Archives: 2017/8 | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
-<meta property="og:type" content="article">
-<meta property="og:title" content="nodejs使用redis緩存key值">
-<meta property="og:url" content="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Cain Play It">
+<meta property="og:url" content="https://cainmaila.github.io/archives/2017/08/index.html">
 <meta property="og:site_name" content="Cain Play It">
-<meta property="og:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
-<meta property="og:updated_time" content="2016-07-25T11:55:08.315Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nodejs使用redis緩存key值">
-<meta name="twitter:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
+<meta name="twitter:title" content="Cain Play It">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -83,84 +70,40 @@
      data-ad-slot="2223033852"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-</script><article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
-  <time datetime="2016-07-25T11:09:46.000Z" itemprop="datePublished">2016-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+</script>
   
-    <h1 class="article-title" itemprop="name">
-      nodejs使用redis緩存key值
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2017/08/11/cordova-vue/" class="archive-article-date">
+  <time datetime="2017-08-11T11:17:09.000Z" itemprop="datePublished">8月 11</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/08/11/cordova-vue/">Vue-Cli整合至Cordova(一)</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。</p>
-<p><del>但是有時候專案實在不大，有時還是會偷偷拿來用</del></p>
-<p>關於redis使用，這裡做一下備忘順便給初學者參考。</p>
-<h4 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h4><p>Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-3.2.1.tar.gz</div><div class="line">tar xzf redis-3.2.1.tar.gz</div><div class="line">cd redis-3.2.1</div><div class="line">make</div></pre></td></tr></table></figure></p>
-<p>Windows<br><a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="external">到這裡來下載安裝</a></p>
-<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>執行安裝目錄下的 redis-server<br><br>window 版本可能得指定conf檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server redis.windows.conf</div></pre></td></tr></table></figure></p>
-<p>這個.conf是 redis 的一些參數設定</p>
-<h4 id="nodejs使用"><a href="#nodejs使用" class="headerlink" title="nodejs使用"></a>nodejs使用</h4><p>安裝模組<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install redis</div></pre></td></tr></table></figure></p>
-<p>連線<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var redis = require(&apos;redis&apos;);</div><div class="line">//預設連線本機的6379 port，也可以指定 redis.createClient(port, host);</div><div class="line">var client = redis.createClient();</div><div class="line">client.on(&apos;connect&apos;, function() &#123;</div><div class="line">    console.log(&apos;connected&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>新增key並查詢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.set(&apos;keyName&apos;, &apos;myName&apos;); //新增</div><div class="line">client.get(&apos;keyName&apos;, function(err, reply) &#123; //查詢</div><div class="line">    console.log(reply); //輸出 myName</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>如果沒有key就會是 null</p>
-<p>存的key值，都會變轉成字串</p>
-<p><a href="https://www.sitepoint.com/using-redis-node-js/" target="_blank" rel="external">其他請自行參閱</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cj67u1vqa000cusyf3ftrvsex" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/07/28/how-to-use-cordova/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          使用Cordova包裝你的Web，建立你的第一個APP
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/07/25/hexo-add-disqus-widget_a/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">如何在Hexo預設模板增加comments的Widget</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
 </section>
         
           <aside id="sidebar">
@@ -273,13 +216,11 @@
 <script>
   var disqus_shortname = 'cainmaila';
   
-  var disqus_url = 'https://cainmaila.github.io/2016/07/25/how-to-setup-redis/';
-  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

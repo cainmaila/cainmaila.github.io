@@ -72,6 +72,69 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-how-to-install-node-rados" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/07/how-to-install-node-rados/" class="article-date">
+  <time datetime="2016-10-07T09:35:04.000Z" itemprop="datePublished">2016-10-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/07/how-to-install-node-rados/">node-rados安裝與使用 - nodejs與Ceph通訊</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近開始使用nodejs與公司的<a href="http://www.ithome.com.tw/tech/98860" target="_blank" rel="external">Ceph</a>串接資料，中間需要透過一個叫做<a href="https://www.npmjs.com/package/rados" target="_blank" rel="external">node-rados</a>的掛件工具，不過一開始就在安裝時踩了不少坑，這裡做一下備忘，也提醒之後要使用的人。</p>
+<ul>
+<li><strong><a href="http://www.ithome.com.tw/tech/98860" target="_blank" rel="external">Ceph</a></strong> 叢集式檔案伺服器</li>
+<li><strong><a href="https://tobegit3hub1.gitbooks.io/ceph_from_scratch/content/architecture/rados.html" target="_blank" rel="external">Rados</a></strong> Ceph存取框架</li>
+</ul>
+<p>雖說nodejs與Ceph，可以透過<a href="https://www.npmjs.com/package/rados" target="_blank" rel="external">node-rados</a>這個工具掛件，可以很簡便的通訊，但是還是得先確認兩件事。</p>
+<h4 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h4><ol>
+<li>目前<strong>librados-dev</strong>僅直接支援Linux，Windows要安裝非常麻煩(有好心人士作了Windows版本)，而且問題很多，我還是建議直接用Linux</li>
+<li>編譯的nodejs，我試過很多版本都不行，目前我使用<strong>node v0.12.9</strong>，開發的話用nvm去切換版本吧。(不然把服務作在一個docker裡面也是一個辦法)</li>
+</ol>
+<h4 id="整個流程大致為這樣"><a href="#整個流程大致為這樣" class="headerlink" title="整個流程大致為這樣"></a>整個流程大致為這樣</h4><ol>
+<li>安裝node-gyp</li>
+<li>安裝編譯node-rados</li>
+<li>準備Ceph定義檔</li>
+</ol>
+<h2 id="安裝node-gyp"><a href="#安裝node-gyp" class="headerlink" title="安裝node-gyp"></a>安裝node-gyp</h2><p>以下教程依據Ubuntu 14，首先安裝node-gyp，有很多相互依賴的套件，請依照以下順作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">apt-get install python-software-properties</div><div class="line">apt-get update</div><div class="line">apt-get install build-essential libncurses-dev autoconf automake libtool</div><div class="line">apt-get install make</div><div class="line">npm install -g node-gyp</div></pre></td></tr></table></figure>
+<h2 id="安裝node-rados"><a href="#安裝node-rados" class="headerlink" title="安裝node-rados"></a>安裝node-rados</h2><p>記得node版本v0.12.9,當初在這卡了很久..<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get install librados-dev</div><div class="line">npm install rados</div></pre></td></tr></table></figure></p>
+<h2 id="準備Ceph定義檔"><a href="#準備Ceph定義檔" class="headerlink" title="準備Ceph定義檔"></a>準備Ceph定義檔</h2><p>ceph.conf Ceph服務器設定檔，主機位置與key檔位址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mon host = 192.168.1.100</div><div class="line">keyring = ceph.client.admin.keyring</div></pre></td></tr></table></figure>
+<h2 id="開始使用"><a href="#開始使用" class="headerlink" title="開始使用"></a>開始使用</h2><p>上述準備好了之後就可以開始直接利用nodejs與Ceph串接</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rados = <span class="built_in">require</span>(<span class="string">'./build/Release/rados'</span>); <span class="comment">//編譯後rados函式庫位置</span></div><div class="line"></div><div class="line"><span class="comment">//開啟一個ceph服務，傳入你的ceph名稱，帳號，最後是你的設定檔位置</span></div><div class="line"><span class="keyword">var</span> cluster = <span class="keyword">new</span> rados.Rados( <span class="string">"ceph"</span>, <span class="string">"client.admin"</span>, <span class="string">"./ceph.conf"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> err = cluster.connect();</div><div class="line"><span class="keyword">if</span> (err) &#123;</div><div class="line">	<span class="comment">// 連線失敗</span></div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"Error "</span> + err);</div><div class="line">	<span class="keyword">throw</span> err;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//印出目前使用的Ceph的fsid</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"fsid : "</span> + cluster.get_fsid() );</div><div class="line"><span class="comment">//取回目前Ceph的pool列表</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"ls pools : "</span> + cluster.pool_list() );</div><div class="line"></div><div class="line"><span class="comment">//建立一個通訊流，pool name是rbd</span></div><div class="line"><span class="keyword">var</span> ioctx = <span class="keyword">new</span> rados.Ioctx(cluster, <span class="string">"rbd"</span>);</div><div class="line"></div><div class="line"><span class="comment">//同步寫入Buffer資料，資料ID為myfile</span></div><div class="line">ioctx.write_full(<span class="string">"myfile"</span>, <span class="keyword">new</span> Buffer(<span class="string">"01234567ABCDEF"</span>));</div><div class="line"></div><div class="line"><span class="comment">//取回myfile資料長度</span></div><div class="line"><span class="keyword">var</span> len =  ioctx.stat(<span class="string">"myfile"</span>).psize;</div><div class="line"></div><div class="line"><span class="comment">//同步取回myfile資料</span></div><div class="line"><span class="keyword">var</span> buf = ioctx.read(<span class="string">"myfile"</span>, len);</div><div class="line"></div><div class="line"><span class="comment">//關閉服務</span></div><div class="line">cluster.shutdown();</div></pre></td></tr></table></figure>
+<p>以上基本用法，詳細可以看<a href="https://github.com/ksperis/node-rados" target="_blank" rel="external">官方範例</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="cj67u1vqn000kusyfgxcjbvlx" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-use-thrift-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/09/14/use-thrift-nodejs/" class="article-date">
@@ -142,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="cj1c3p0wu000rx8yftr5at24x" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/" data-id="cj67u1vrk000yusyfyqy76xnd" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/14/use-thrift-nodejs/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -191,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="cj1c3p0wx000tx8yfwyew8ehq" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/" data-id="cj67u1vrr0013usyfzo0gwhhe" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/09/07/use-webpack-dashboard/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -250,7 +313,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="cj1c3p0wj000px8yf595sbhs7" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/" data-id="cj67u1vrh000vusyfrsie5zjo" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/08/05/use-leedian-jsdoc/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -359,7 +422,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="cj1c3p0w8000hx8yfcxf7hvfh" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/" data-id="cj67u1vql000husyfu8nrv3b7" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -412,7 +475,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cj1c3p0vt000ax8yfib0k9x5n" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cj67u1vqa000cusyf3ftrvsex" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -461,7 +524,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="cj1c3p0vm0006x8yfujvw8ey0" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/" data-id="cj67u1vqd000fusyfdz654k69" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget_a/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -510,7 +573,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cj1c3p0vi0004x8yfpq7szxtm" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/" data-id="cj67u1vq7000busyfkqxd4bh7" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/25/hexo-add-disqus-widget/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -564,7 +627,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cj1c3p0vz000cx8yfjan2iag0" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/how-to-use-commander/" data-id="cj67u1vr1000pusyfbmivkiiq" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/how-to-use-commander/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -630,7 +693,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cj1c3p0va0003x8yf5awhhftp" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/" data-id="cj67u1vna0000usyfiymke2ks" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/07/22/How-to-build-hexo-to-github/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -672,7 +735,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -682,7 +745,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
+      <a href="/tags/cordova/" style="font-size: 13.33px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 13.33px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
     </div>
   </div>
 
@@ -691,7 +754,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -702,6 +765,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/08/11/cordova-vue/">Vue-Cli整合至Cordova(一)</a>
+          </li>
         
           <li>
             <a href="/2017/04/10/node-cli/">使用Nodejs開發自己的Cli命令工具</a>
@@ -717,10 +784,6 @@
         
           <li>
             <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
-          </li>
-        
-          <li>
-            <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
           </li>
         
       </ul>

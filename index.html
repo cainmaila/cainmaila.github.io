@@ -72,6 +72,70 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-cordova-vue" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/11/cordova-vue/" class="article-date">
+  <time datetime="2017-08-11T11:17:09.000Z" itemprop="datePublished">2017-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/11/cordova-vue/">Vue-Cli整合至Cordova(一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Cordova主要是將開發好的靜態Web頁面打包至APP，同時也支援各個平台。(Android、IOS、Windows..等等)</p>
+<p>以往Web開發者，會另外開啟一個專案，再將build後的靜態產出，放進Cordova專案。</p>
+<p>例如Vue開發者可以利用vue-cli建立一個singpage專案，build後再將dist的產出copy到Cordova專案中</p>
+<p>如果你懶得這麼做，或許可以自己寫一個自動化，但是即使這樣還是得分別放置兩個專案(Web &amp; Cordova)</p>
+<p>實際上是可以直接將兩個專案合併成一個，開發上將非常方便，以下將介紹Vue專案整合至Cordova專案包中</p>
+<h2 id="首先建立一個Cordova專案"><a href="#首先建立一個Cordova專案" class="headerlink" title="首先建立一個Cordova專案"></a>首先建立一個Cordova專案</h2><p>安裝cordova</p>
+<p>安裝詳細可以參照我的這篇文章<a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a></p>
+<p>建立一個Cordova專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova create [專案名稱]</div></pre></td></tr></table></figure></p>
+<p>以Android為例，我們先建立Android平台<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [專案名稱]</div><div class="line">cordova platform add android</div></pre></td></tr></table></figure></p>
+<p>先試試是否可以成功發布<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova build</div></pre></td></tr></table></figure></p>
+<p>成功會產出 [專案名稱].apk</p>
+<p>或者可以接上設備，直接發布到設備上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova run</div></pre></td></tr></table></figure></p>
+<p>到這裡為止，代表你的Cordova專案與環境都沒有問題，接下來我們將整合Vue-cli專案</p>
+<h2 id="用Vue-cli建立專案並整合至Cordova"><a href="#用Vue-cli建立專案並整合至Cordova" class="headerlink" title="用Vue-cli建立專案並整合至Cordova"></a>用Vue-cli建立專案並整合至Cordova</h2><p>首先<strong>在cordova專案中</strong>，用vue-cli建立vue專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [專案名稱]</div><div class="line">vue init webpack [web專案名]</div></pre></td></tr></table></figure></p>
+<p>安裝必要套件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [web專案名]</div><div class="line">npm i</div></pre></td></tr></table></figure></p>
+<p>接下來開始整合專案，以cordova來說，會把cordova/www中的資料打包至app，所以只要將vue專案build後的dist導入至cordova/www就可以很方便的使用，為了達到這目的，我們需要修改vue專案中的輸出目的</p>
+<p>修改vue專案的 config/index.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">build: &#123;</div><div class="line">    ...</div><div class="line">    index:path.resolve(__dirname, <span class="string">'../../www/index.html'</span>),</div><div class="line">    assetsRoot: path.resolve(__dirname, <span class="string">'../../www/'</span>),</div><div class="line">    assetsPublicPath: <span class="string">'./'</span>,</div><div class="line">    ...</div></pre></td></tr></table></figure></p>
+<p>修改以上3個欄位，目的就是把build後的目標更改為 cordova/www</p>
+<p>在vue的 index.html 中增加 cordova 掛件<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"cordova.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>為了方便輸出，我們在package.json增加一個命令<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"> "scripts": &#123;</div><div class="line">    ...</div><div class="line">    "android": "npm run run &amp;&amp; cordova run"</div><div class="line">  &#125;,</div></pre></td></tr></table></figure></p>
+<p>試著接上手機，執行編譯<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm run android</div></pre></td></tr></table></figure></p>
+<p>完成後就可以看到手機上的畫面!</p>
+<img src="/2017/08/11/cordova-vue/p.png" alt="p.png" title="">
+<p>已經成功整合兩個專案</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/08/11/cordova-vue/" data-id="cj67u1voc0001usyfklav4blt" class="article-share-link">Share</a>
+      
+        <a href="https://cainmaila.github.io/2017/08/11/cordova-vue/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-node-cli" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/10/node-cli/" class="article-date">
@@ -124,7 +188,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cj1c3p0vq0008x8yfypgpmawk" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cj67u1vss001zusyfktz4zsut" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/04/10/node-cli/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -183,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cj1c3p0x5000wx8yfmz0sn6le" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cj67u1vqx000nusyfnnxe3bgk" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/03/07/mobile-page/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -298,7 +362,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cj1c3p0ux0000x8yfjm0gwj1q" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cj67u1vq20009usyflg3n9tly" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/02/10/brotli/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -367,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cj1c3p0w6000gx8yfbta54qvn" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cj67u1vqq000musyf0cws5mnu" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -420,7 +484,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cj1c3p0w3000dx8yfhvb0ufll" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cj67u1vsr001yusyftm23hgz0" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -488,7 +552,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cj1c3p0wc000kx8yfg7twru2n" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cj67u1vr6000qusyf2j9vh1ny" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -542,7 +606,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cj1c3p0v30001x8yf47lna5nx" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cj67u1vpy0008usyfw30jnesc" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -611,7 +675,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cj1c3p0wd000lx8yfs7y7mprz" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cj67u1vrc000tusyf1vu0a934" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -664,75 +728,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="cj1c3p0x2000vx8yfygu9pq11" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="cj67u1vrn0010usyfn4qceq3t" class="article-share-link">Share</a>
       
         <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-how-to-install-node-rados" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/07/how-to-install-node-rados/" class="article-date">
-  <time datetime="2016-10-07T09:35:04.000Z" itemprop="datePublished">2016-10-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/07/how-to-install-node-rados/">node-rados安裝與使用 - nodejs與Ceph通訊</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近開始使用nodejs與公司的<a href="http://www.ithome.com.tw/tech/98860" target="_blank" rel="external">Ceph</a>串接資料，中間需要透過一個叫做<a href="https://www.npmjs.com/package/rados" target="_blank" rel="external">node-rados</a>的掛件工具，不過一開始就在安裝時踩了不少坑，這裡做一下備忘，也提醒之後要使用的人。</p>
-<ul>
-<li><strong><a href="http://www.ithome.com.tw/tech/98860" target="_blank" rel="external">Ceph</a></strong> 叢集式檔案伺服器</li>
-<li><strong><a href="https://tobegit3hub1.gitbooks.io/ceph_from_scratch/content/architecture/rados.html" target="_blank" rel="external">Rados</a></strong> Ceph存取框架</li>
-</ul>
-<p>雖說nodejs與Ceph，可以透過<a href="https://www.npmjs.com/package/rados" target="_blank" rel="external">node-rados</a>這個工具掛件，可以很簡便的通訊，但是還是得先確認兩件事。</p>
-<h4 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h4><ol>
-<li>目前<strong>librados-dev</strong>僅直接支援Linux，Windows要安裝非常麻煩(有好心人士作了Windows版本)，而且問題很多，我還是建議直接用Linux</li>
-<li>編譯的nodejs，我試過很多版本都不行，目前我使用<strong>node v0.12.9</strong>，開發的話用nvm去切換版本吧。(不然把服務作在一個docker裡面也是一個辦法)</li>
-</ol>
-<h4 id="整個流程大致為這樣"><a href="#整個流程大致為這樣" class="headerlink" title="整個流程大致為這樣"></a>整個流程大致為這樣</h4><ol>
-<li>安裝node-gyp</li>
-<li>安裝編譯node-rados</li>
-<li>準備Ceph定義檔</li>
-</ol>
-<h2 id="安裝node-gyp"><a href="#安裝node-gyp" class="headerlink" title="安裝node-gyp"></a>安裝node-gyp</h2><p>以下教程依據Ubuntu 14，首先安裝node-gyp，有很多相互依賴的套件，請依照以下順作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">apt-get install python-software-properties</div><div class="line">apt-get update</div><div class="line">apt-get install build-essential libncurses-dev autoconf automake libtool</div><div class="line">apt-get install make</div><div class="line">npm install -g node-gyp</div></pre></td></tr></table></figure>
-<h2 id="安裝node-rados"><a href="#安裝node-rados" class="headerlink" title="安裝node-rados"></a>安裝node-rados</h2><p>記得node版本v0.12.9,當初在這卡了很久..<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get install librados-dev</div><div class="line">npm install rados</div></pre></td></tr></table></figure></p>
-<h2 id="準備Ceph定義檔"><a href="#準備Ceph定義檔" class="headerlink" title="準備Ceph定義檔"></a>準備Ceph定義檔</h2><p>ceph.conf Ceph服務器設定檔，主機位置與key檔位址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mon host = 192.168.1.100</div><div class="line">keyring = ceph.client.admin.keyring</div></pre></td></tr></table></figure>
-<h2 id="開始使用"><a href="#開始使用" class="headerlink" title="開始使用"></a>開始使用</h2><p>上述準備好了之後就可以開始直接利用nodejs與Ceph串接</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rados = <span class="built_in">require</span>(<span class="string">'./build/Release/rados'</span>); <span class="comment">//編譯後rados函式庫位置</span></div><div class="line"></div><div class="line"><span class="comment">//開啟一個ceph服務，傳入你的ceph名稱，帳號，最後是你的設定檔位置</span></div><div class="line"><span class="keyword">var</span> cluster = <span class="keyword">new</span> rados.Rados( <span class="string">"ceph"</span>, <span class="string">"client.admin"</span>, <span class="string">"./ceph.conf"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> err = cluster.connect();</div><div class="line"><span class="keyword">if</span> (err) &#123;</div><div class="line">	<span class="comment">// 連線失敗</span></div><div class="line">	<span class="built_in">console</span>.log(<span class="string">"Error "</span> + err);</div><div class="line">	<span class="keyword">throw</span> err;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//印出目前使用的Ceph的fsid</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"fsid : "</span> + cluster.get_fsid() );</div><div class="line"><span class="comment">//取回目前Ceph的pool列表</span></div><div class="line"><span class="built_in">console</span>.log( <span class="string">"ls pools : "</span> + cluster.pool_list() );</div><div class="line"></div><div class="line"><span class="comment">//建立一個通訊流，pool name是rbd</span></div><div class="line"><span class="keyword">var</span> ioctx = <span class="keyword">new</span> rados.Ioctx(cluster, <span class="string">"rbd"</span>);</div><div class="line"></div><div class="line"><span class="comment">//同步寫入Buffer資料，資料ID為myfile</span></div><div class="line">ioctx.write_full(<span class="string">"myfile"</span>, <span class="keyword">new</span> Buffer(<span class="string">"01234567ABCDEF"</span>));</div><div class="line"></div><div class="line"><span class="comment">//取回myfile資料長度</span></div><div class="line"><span class="keyword">var</span> len =  ioctx.stat(<span class="string">"myfile"</span>).psize;</div><div class="line"></div><div class="line"><span class="comment">//同步取回myfile資料</span></div><div class="line"><span class="keyword">var</span> buf = ioctx.read(<span class="string">"myfile"</span>, len);</div><div class="line"></div><div class="line"><span class="comment">//關閉服務</span></div><div class="line">cluster.shutdown();</div></pre></td></tr></table></figure>
-<p>以上基本用法，詳細可以看<a href="https://github.com/ksperis/node-rados" target="_blank" rel="external">官方範例</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/" data-id="cj1c3p0wg000ox8yfcf2g4214" class="article-share-link">Share</a>
-      
-        <a href="https://cainmaila.github.io/2016/10/07/how-to-install-node-rados/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rados/">rados</a></li></ul>
 
     </footer>
   </div>
@@ -769,7 +770,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -779,7 +780,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
+      <a href="/tags/cordova/" style="font-size: 13.33px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 13.33px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
     </div>
   </div>
 
@@ -788,7 +789,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -799,6 +800,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/08/11/cordova-vue/">Vue-Cli整合至Cordova(一)</a>
+          </li>
         
           <li>
             <a href="/2017/04/10/node-cli/">使用Nodejs開發自己的Cli命令工具</a>
@@ -814,10 +819,6 @@
         
           <li>
             <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
-          </li>
-        
-          <li>
-            <a href="/2017/01/26/rollup-web-app-2/">建立你的前端開發環境(二) - ES6開發環境</a>
           </li>
         
       </ul>

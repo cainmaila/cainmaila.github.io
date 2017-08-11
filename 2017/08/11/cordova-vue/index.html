@@ -3,27 +3,29 @@
 <head>
   <meta charset="utf-8">
   
-  <title>nodejs使用redis緩存key值 | Cain Play It</title>
+  <title>Vue-Cli整合至Cordova(一) | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
+  <meta name="description" content="Cordova主要是將開發好的靜態Web頁面打包至APP，同時也支援各個平台。(Android、IOS、Windows..等等)
+以往Web開發者，會另外開啟一個專案，再將build後的靜態產出，放進Cordova專案。
+例如Vue開發者可以利用vue-cli建立一個singpage專案，build後再將dist的產出copy到Cordova專案中
+如果你懶得這麼做，或許可以自己寫一個自動化，但是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nodejs使用redis緩存key值">
-<meta property="og:url" content="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/index.html">
+<meta property="og:title" content="Vue-Cli整合至Cordova(一)">
+<meta property="og:url" content="https://cainmaila.github.io/2017/08/11/cordova-vue/index.html">
 <meta property="og:site_name" content="Cain Play It">
-<meta property="og:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
-<meta property="og:updated_time" content="2016-07-25T11:55:08.315Z">
+<meta property="og:description" content="Cordova主要是將開發好的靜態Web頁面打包至APP，同時也支援各個平台。(Android、IOS、Windows..等等)
+以往Web開發者，會另外開啟一個專案，再將build後的靜態產出，放進Cordova專案。
+例如Vue開發者可以利用vue-cli建立一個singpage專案，build後再將dist的產出copy到Cordova專案中
+如果你懶得這麼做，或許可以自己寫一個自動化，但是">
+<meta property="og:image" content="https://cainmaila.github.io/2017/08/11/cordova-vue/p.png">
+<meta property="og:updated_time" content="2017-08-11T12:12:12.364Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nodejs使用redis緩存key值">
-<meta name="twitter:description" content="Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。
-但是有時候專案實在不大，有時還是會偷偷拿來用
-關於redis使用，這裡做一下備忘順便給初學者參考。
-安裝Linux1234wget http://download.redis.io/re">
+<meta name="twitter:title" content="Vue-Cli整合至Cordova(一)">
+<meta name="twitter:description" content="Cordova主要是將開發好的靜態Web頁面打包至APP，同時也支援各個平台。(Android、IOS、Windows..等等)
+以往Web開發者，會另外開啟一個專案，再將build後的靜態產出，放進Cordova專案。
+例如Vue開發者可以利用vue-cli建立一個singpage專案，build後再將dist的產出copy到Cordova專案中
+如果你懶得這麼做，或許可以自己寫一個自動化，但是">
+<meta name="twitter:image" content="https://cainmaila.github.io/2017/08/11/cordova-vue/p.png">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -83,10 +85,10 @@
      data-ad-slot="2223033852"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-</script><article id="post-how-to-setup-redis" class="article article-type-post" itemscope itemprop="blogPost">
+</script><article id="post-cordova-vue" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/07/25/how-to-setup-redis/" class="article-date">
-  <time datetime="2016-07-25T11:09:46.000Z" itemprop="datePublished">2016-07-25</time>
+    <a href="/2017/08/11/cordova-vue/" class="article-date">
+  <time datetime="2017-08-11T11:17:09.000Z" itemprop="datePublished">2017-08-11</time>
 </a>
     
   </div>
@@ -97,7 +99,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      nodejs使用redis緩存key值
+      Vue-Cli整合至Cordova(一)
     </h1>
   
 
@@ -105,29 +107,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Redis 是開源的記憶體 Key-Value 資料庫實作，自己目前使用上絕大部分是拿來當成session的緩存，(配合express-session)，實務上可能還會再搭配MongoDB或者其他的關聯性資料庫。</p>
-<p><del>但是有時候專案實在不大，有時還是會偷偷拿來用</del></p>
-<p>關於redis使用，這裡做一下備忘順便給初學者參考。</p>
-<h4 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h4><p>Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-3.2.1.tar.gz</div><div class="line">tar xzf redis-3.2.1.tar.gz</div><div class="line">cd redis-3.2.1</div><div class="line">make</div></pre></td></tr></table></figure></p>
-<p>Windows<br><a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="external">到這裡來下載安裝</a></p>
-<h4 id="啟動服務"><a href="#啟動服務" class="headerlink" title="啟動服務"></a>啟動服務</h4><p>執行安裝目錄下的 redis-server<br><br>window 版本可能得指定conf檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server redis.windows.conf</div></pre></td></tr></table></figure></p>
-<p>這個.conf是 redis 的一些參數設定</p>
-<h4 id="nodejs使用"><a href="#nodejs使用" class="headerlink" title="nodejs使用"></a>nodejs使用</h4><p>安裝模組<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install redis</div></pre></td></tr></table></figure></p>
-<p>連線<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var redis = require(&apos;redis&apos;);</div><div class="line">//預設連線本機的6379 port，也可以指定 redis.createClient(port, host);</div><div class="line">var client = redis.createClient();</div><div class="line">client.on(&apos;connect&apos;, function() &#123;</div><div class="line">    console.log(&apos;connected&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>新增key並查詢<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">client.set(&apos;keyName&apos;, &apos;myName&apos;); //新增</div><div class="line">client.get(&apos;keyName&apos;, function(err, reply) &#123; //查詢</div><div class="line">    console.log(reply); //輸出 myName</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>如果沒有key就會是 null</p>
-<p>存的key值，都會變轉成字串</p>
-<p><a href="https://www.sitepoint.com/using-redis-node-js/" target="_blank" rel="external">其他請自行參閱</a></p>
+        <p>Cordova主要是將開發好的靜態Web頁面打包至APP，同時也支援各個平台。(Android、IOS、Windows..等等)</p>
+<p>以往Web開發者，會另外開啟一個專案，再將build後的靜態產出，放進Cordova專案。</p>
+<p>例如Vue開發者可以利用vue-cli建立一個singpage專案，build後再將dist的產出copy到Cordova專案中</p>
+<p>如果你懶得這麼做，或許可以自己寫一個自動化，但是即使這樣還是得分別放置兩個專案(Web &amp; Cordova)</p>
+<p>實際上是可以直接將兩個專案合併成一個，開發上將非常方便，以下將介紹Vue專案整合至Cordova專案包中</p>
+<h2 id="首先建立一個Cordova專案"><a href="#首先建立一個Cordova專案" class="headerlink" title="首先建立一個Cordova專案"></a>首先建立一個Cordova專案</h2><p>安裝cordova</p>
+<p>安裝詳細可以參照我的這篇文章<a href="https://cainmaila.github.io/2016/07/28/how-to-use-cordova/">使用Cordova包裝你的Web，建立你的第一個APP</a></p>
+<p>建立一個Cordova專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova create [專案名稱]</div></pre></td></tr></table></figure></p>
+<p>以Android為例，我們先建立Android平台<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [專案名稱]</div><div class="line">cordova platform add android</div></pre></td></tr></table></figure></p>
+<p>先試試是否可以成功發布<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova build</div></pre></td></tr></table></figure></p>
+<p>成功會產出 [專案名稱].apk</p>
+<p>或者可以接上設備，直接發布到設備上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cordova run</div></pre></td></tr></table></figure></p>
+<p>到這裡為止，代表你的Cordova專案與環境都沒有問題，接下來我們將整合Vue-cli專案</p>
+<h2 id="用Vue-cli建立專案並整合至Cordova"><a href="#用Vue-cli建立專案並整合至Cordova" class="headerlink" title="用Vue-cli建立專案並整合至Cordova"></a>用Vue-cli建立專案並整合至Cordova</h2><p>首先<strong>在cordova專案中</strong>，用vue-cli建立vue專案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [專案名稱]</div><div class="line">vue init webpack [web專案名]</div></pre></td></tr></table></figure></p>
+<p>安裝必要套件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd [web專案名]</div><div class="line">npm i</div></pre></td></tr></table></figure></p>
+<p>接下來開始整合專案，以cordova來說，會把cordova/www中的資料打包至app，所以只要將vue專案build後的dist導入至cordova/www就可以很方便的使用，為了達到這目的，我們需要修改vue專案中的輸出目的</p>
+<p>修改vue專案的 config/index.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">build: &#123;</div><div class="line">    ...</div><div class="line">    index:path.resolve(__dirname, <span class="string">'../../www/index.html'</span>),</div><div class="line">    assetsRoot: path.resolve(__dirname, <span class="string">'../../www/'</span>),</div><div class="line">    assetsPublicPath: <span class="string">'./'</span>,</div><div class="line">    ...</div></pre></td></tr></table></figure></p>
+<p>修改以上3個欄位，目的就是把build後的目標更改為 cordova/www</p>
+<p>在vue的 index.html 中增加 cordova 掛件<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"cordova.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>為了方便輸出，我們在package.json增加一個命令<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"> "scripts": &#123;</div><div class="line">    ...</div><div class="line">    "android": "npm run run &amp;&amp; cordova run"</div><div class="line">  &#125;,</div></pre></td></tr></table></figure></p>
+<p>試著接上手機，執行編譯<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm run android</div></pre></td></tr></table></figure></p>
+<p>完成後就可以看到手機上的畫面!</p>
+<img src="/2017/08/11/cordova-vue/p.png" alt="p.png" title="">
+<p>已經成功整合兩個專案</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/" data-id="cj67u1vqa000cusyf3ftrvsex" class="article-share-link">Share</a>
+      <a data-url="https://cainmaila.github.io/2017/08/11/cordova-vue/" data-id="cj67u1voc0001usyfklav4blt" class="article-share-link">Share</a>
       
-        <a href="https://cainmaila.github.io/2016/07/25/how-to-setup-redis/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://cainmaila.github.io/2017/08/11/cordova-vue/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cordova/">cordova</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
 
     </footer>
   </div>
@@ -135,19 +148,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/07/28/how-to-use-cordova/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          使用Cordova包裝你的Web，建立你的第一個APP
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/07/25/hexo-add-disqus-widget_a/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/04/10/node-cli/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">如何在Hexo預設模板增加comments的Widget</div>
+      <div class="article-nav-title">使用Nodejs開發自己的Cli命令工具</div>
     </a>
   
 </nav>
@@ -273,7 +277,7 @@
 <script>
   var disqus_shortname = 'cainmaila';
   
-  var disqus_url = 'https://cainmaila.github.io/2016/07/25/how-to-setup-redis/';
+  var disqus_url = 'https://cainmaila.github.io/2017/08/11/cordova-vue/';
   
   (function(){
     var dsq = document.createElement('script');
