@@ -72,6 +72,73 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   
+    <article id="post-golang-glide" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/27/golang-glide/" class="article-date">
+  <time datetime="2017-12-27T02:46:36.000Z" itemprop="datePublished">2017-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/27/golang-glide/">Golang 套件管理工具 Glide</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如同 nodejs 的 npm ， Go 也擁有自己的套件管理工具 <a href="https://glide.sh/" target="_blank" rel="external">Glide</a>，這裡介紹一下的使用方式</p>
+<img src="/2017/12/27/golang-glide/glide.png" alt="glide.png" title="">
+<h2 id="安裝方式-window-10"><a href="#安裝方式-window-10" class="headerlink" title="安裝方式 (window 10)"></a>安裝方式 (window 10)</h2><p>下載取得專案</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go get github.com/Masterminds/glide</div></pre></td></tr></table></figure>
+<p>進入 <code>GOPATH\src\github.com\Masterminds\glide</code> 資料夾</p>
+<p>編譯執行檔</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go build glide.go</div></pre></td></tr></table></figure>
+<p>執行檔移置 bin 資料夾</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go install</div></pre></td></tr></table></figure>
+<p>如果環境變數有設定<code>go/bin</code>就可以直接執行</p>
+<h2 id="建立一個新專案"><a href="#建立一個新專案" class="headerlink" title="建立一個新專案"></a>建立一個新專案</h2><p>建立<code>glide.yaml</code>，這是 glide 的專案設定檔，類似 npm 的 package.json</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide init</div></pre></td></tr></table></figure>
+<h2 id="新增第三方套件"><a href="#新增第三方套件" class="headerlink" title="新增第三方套件"></a>新增第三方套件</h2><p>假設我們要新增 <code>github.com/foo/bar</code> 套件 (後面可以接版號)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide get github.com/foo/bar<span class="comment">#^1.2.3</span></div></pre></td></tr></table></figure>
+<p><code>glide</code> 會幫你在專案中新增一個 <code>vendor</code> 資料夾，並把相依的套件放在裡面，之後執行<code>go</code>時，會先尋找 <code>vendor</code> 資料夾有無套件，如果沒有才會去找 <code>$GOPATH</code></p>
+<h2 id="下載專案後安裝相依套件"><a href="#下載專案後安裝相依套件" class="headerlink" title="下載專案後安裝相依套件"></a>下載專案後安裝相依套件</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide install</div></pre></td></tr></table></figure>
+<p>如果專案內沒有 glide.lock 檔案，當您執行 glide install 後，其實系統會先執行 glide up 產生 glide.lock 檔案</p>
+<h2 id="window10-安裝問題處理"><a href="#window10-安裝問題處理" class="headerlink" title="window10 安裝問題處理"></a>window10 安裝問題處理</h2><p>如果出現錯誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ERROR] Unable to export dependencies to vendor directory: Error moving files: exit status 1. output: Access is denied. 0 dir(s) moved.</div></pre></td></tr></table></figure>
+<p>這是一個 window10 的 bug ，請去修改 <code>github.com/Masterminds/glide/path/winbug.go</code> 76 行 <code>move 改 xcopy</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Handking windows cases first</span></div><div class="line">	<span class="keyword">if</span> runtime.GOOS == <span class="string">"windows"</span> &#123;</div><div class="line">		msg.Debug(<span class="string">"Detected Windows. Moving files using windows command"</span>)</div><div class="line">		<span class="comment">// cmd := exec.Command("cmd.exe", "/c", "move", o, n) //move改xcopy</span></div><div class="line">		cmd := exec.Command(<span class="string">"cmd.exe"</span>, <span class="string">"/c"</span>, <span class="string">"xcopy /s/y"</span>, o, n+<span class="string">"\\"</span>)</div><div class="line">		output, err := cmd.CombinedOutput()</div><div class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">"Error moving files: %s. output: %s"</span>, err, output)</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>修改後重新編譯一次可</p>
+<h2 id="其他-Glide-參數"><a href="#其他-Glide-參數" class="headerlink" title="其他 Glide 參數"></a>其他 Glide 參數</h2><ul>
+<li><code>--all-dependencies</code> 下載相依套件全部的 dependencies</li>
+<li><code>-s</code> 下載後刪除 .git 目錄</li>
+<li><code>-v</code> 移除 Godeps/_workspace 等相關目錄</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/12/27/golang-glide/" data-id="cjbohcode00005ovm8cjxc8ad" class="article-share-link">Partager</a>
+      
+        <a href="https://cainmaila.github.io/2017/12/27/golang-glide/#disqus_thread" class="article-comment-link">Commentaires</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-cordova-vue" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/08/11/cordova-vue/" class="article-date">
@@ -122,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/08/11/cordova-vue/" data-id="cj67u7mxt0001msyf1hgicmfs" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/08/11/cordova-vue/" data-id="cjbohcoe100095ovmk8ix0gf0" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/08/11/cordova-vue/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -188,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cj67u7myw000kmsyfaswg6iz1" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/04/10/node-cli/" data-id="cjbohcoea000k5ovm3i43yr2r" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/04/10/node-cli/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -247,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cj67u7myq000fmsyfk75x298z" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/03/07/mobile-page/" data-id="cjbohcoec000m5ovmqyhjm7ia" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/03/07/mobile-page/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -362,7 +429,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cj67u7mxn0000msyf9ndypi50" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/02/10/brotli/" data-id="cjbohcody00085ovmpgthyrjq" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/02/10/brotli/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -431,7 +498,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cj67u7mz1000omsyfhwfwip29" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/" data-id="cjbohcoee000o5ovmj3ntnu6o" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-3/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -484,7 +551,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cj67u7myx000mmsyfp0ru6yta" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/" data-id="cjbohcoe8000i5ovm329dw1fi" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/01/26/rollup-web-app-2/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -552,7 +619,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cj67u7mz4000qmsyfi3pd5jw9" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2017/01/25/rollup-web-app/" data-id="cjbohcoef000p5ovmpgkisz4l" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2017/01/25/rollup-web-app/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -606,7 +673,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cj67u7my90006msyfq8uacrfd" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2016/11/08/express-ssl/" data-id="cjbohcodr00045ovmt7904sfw" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2016/11/08/express-ssl/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -675,7 +742,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cj67u7mzf000smsyfbx99vod7" class="article-share-link">Partager</a>
+      <a data-url="https://cainmaila.github.io/2016/10/18/sublime-vue-template/" data-id="cjbohcoel000w5ovm3wqy1pqz" class="article-share-link">Partager</a>
       
         <a href="https://cainmaila.github.io/2016/10/18/sublime-vue-template/#disqus_thread" class="article-comment-link">Commentaires</a>
       
@@ -689,63 +756,10 @@
 
 
   
-    <article id="post-use-yern" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/14/use-yern/" class="article-date">
-  <time datetime="2016-10-14T02:16:05.000Z" itemprop="datePublished">2016-10-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/14/use-yern/">新一代的js套件管理工具yarn - 取代npm的工具</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>談一下突然爆紅的<a href="https://github.com/yarnpkg/yarn" target="_blank" rel="external">Yarn</a>，這是Facebook最近發布的一款依賴包安裝工具。<br><br>比較npm有什麼看得見的優勢? 首先，他<strong>非常快</strong>，快到見鬼XD<br><br>之前裝babel-preset-es2015一直是個痛，改用yarn裝居然不到10秒…<br><br>yarn緩存了每次你下載的模塊，所以同樣模塊同樣的版本不會發送第二次下載請求，在開始安裝一個包之前會先用checksums來驗證，你不用擔心本地的緩存的包被破壞了導致安裝失敗<br>yarn也可以通過並行的網絡請求最大限度利用網絡資源，你可以參考官方對比 npm 的區別 <a href="https://yarnpkg.com/en/compare" target="_blank" rel="external">Compare Yarn Performance</a></p>
-<p>另外，npm自己本身也有參與這個專案，所以…斷然改用吧!</p>
-<p><strong><a href="https://yarnpkg.com/" target="_blank" rel="external">yarn官方網站</a></strong></p>
-<img src="/2016/10/14/use-yern/yarn.jpg" alt="yarn.jpg" title="">
-<h2 id="如何安裝"><a href="#如何安裝" class="headerlink" title="如何安裝"></a>如何安裝</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i yarn -g</div></pre></td></tr></table></figure>
-<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p>定義package.json</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn init</div></pre></td></tr></table></figure>
-<p>安裝套件，比方express</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn add express</div></pre></td></tr></table></figure>
-<p>現在不需要家 –save 參數也會新增到package.json</p>
-<p>移除套件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn remove express</div></pre></td></tr></table></figure></p>
-<p>基本上大部分都跟npm用法類似，你也可以用 yarn -h 查詢用法</p>
-<p>根本無痛轉移,大家衝吧!</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://cainmaila.github.io/2016/10/14/use-yern/" data-id="cj67u7mzx000ymsyftgdecu72" class="article-share-link">Partager</a>
-      
-        <a href="https://cainmaila.github.io/2016/10/14/use-yern/#disqus_thread" class="article-comment-link">Commentaires</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yarn/">yarn</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -770,7 +784,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cordova/">cordova</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jsdoc/">jsdoc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rados/">rados</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollup/">rollup</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thrift/">thrift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yarn/">yarn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新手入門/">新手入門</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -780,7 +794,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/cordova/" style="font-size: 13.33px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 13.33px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
+      <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/cordova/" style="font-size: 13.33px;">cordova</a> <a href="/tags/express/" style="font-size: 13.33px;">express</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/jsdoc/" style="font-size: 10px;">jsdoc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/npm/" style="font-size: 13.33px;">npm</a> <a href="/tags/rados/" style="font-size: 10px;">rados</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rollup/" style="font-size: 16.67px;">rollup</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/vue/" style="font-size: 13.33px;">vue</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/yarn/" style="font-size: 10px;">yarn</a> <a href="/tags/新手入門/" style="font-size: 10px;">新手入門</a>
     </div>
   </div>
 
@@ -789,7 +803,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -800,6 +814,10 @@
     <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/12/27/golang-glide/">Golang 套件管理工具 Glide</a>
+          </li>
         
           <li>
             <a href="/2017/08/11/cordova-vue/">Vue-Cli整合至Cordova(一)</a>
@@ -815,10 +833,6 @@
         
           <li>
             <a href="/2017/02/10/brotli/">在Express上使用新一代的資料壓縮演算法 - Brotli</a>
-          </li>
-        
-          <li>
-            <a href="/2017/01/26/rollup-web-app-3/">建立你的前端開發環境(三) - 使用 npm 的第三方模塊</a>
           </li>
         
       </ul>

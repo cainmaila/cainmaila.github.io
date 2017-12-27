@@ -3,14 +3,44 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Mot-clé: gulp | Cain Play It</title>
+  <title>Golang 套件管理工具 Glide | Cain Play It</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cain Play It">
-<meta property="og:url" content="https://cainmaila.github.io/tags/gulp/index.html">
+  <meta name="description" content="如同 nodejs 的 npm ， Go 也擁有自己的套件管理工具 Glide，這裡介紹一下的使用方式
+
+安裝方式 (window 10)下載取得專案
+1go get github.com/Masterminds/glide
+進入 GOPATH\src\github.com\Masterminds\glide 資料夾
+編譯執行檔
+1go build glide.go
+執行檔移置 bin 資料夾
+1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 套件管理工具 Glide">
+<meta property="og:url" content="https://cainmaila.github.io/2017/12/27/golang-glide/index.html">
 <meta property="og:site_name" content="Cain Play It">
+<meta property="og:description" content="如同 nodejs 的 npm ， Go 也擁有自己的套件管理工具 Glide，這裡介紹一下的使用方式
+
+安裝方式 (window 10)下載取得專案
+1go get github.com/Masterminds/glide
+進入 GOPATH\src\github.com\Masterminds\glide 資料夾
+編譯執行檔
+1go build glide.go
+執行檔移置 bin 資料夾
+1">
+<meta property="og:image" content="https://cainmaila.github.io/2017/12/27/golang-glide/glide.png">
+<meta property="og:updated_time" content="2017-12-27T03:07:00.690Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cain Play It">
+<meta name="twitter:title" content="Golang 套件管理工具 Glide">
+<meta name="twitter:description" content="如同 nodejs 的 npm ， Go 也擁有自己的套件管理工具 Glide，這裡介紹一下的使用方式
+
+安裝方式 (window 10)下載取得專案
+1go get github.com/Masterminds/glide
+進入 GOPATH\src\github.com\Masterminds\glide 資料夾
+編譯執行檔
+1go build glide.go
+執行檔移置 bin 資料夾
+1">
+<meta name="twitter:image" content="https://cainmaila.github.io/2017/12/27/golang-glide/glide.png">
   
     <link rel="alternate" href="/atom.xml" title="Cain Play It" type="application/atom+xml">
   
@@ -70,40 +100,89 @@
      data-ad-slot="2223033852"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/08/05/use-leedian-jsdoc/" class="archive-article-date">
-  <time datetime="2016-08-05T11:16:30.000Z" itemprop="datePublished">8月 5</time>
+</script><article id="post-golang-glide" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/27/golang-glide/" class="article-date">
+  <time datetime="2017-12-27T02:46:36.000Z" itemprop="datePublished">2017-12-27</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/05/use-leedian-jsdoc/">利用Jsdoc幫Javascript產出漂亮的文檔</a>
+    <h1 class="article-title" itemprop="name">
+      Golang 套件管理工具 Glide
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如同 nodejs 的 npm ， Go 也擁有自己的套件管理工具 <a href="https://glide.sh/" target="_blank" rel="external">Glide</a>，這裡介紹一下的使用方式</p>
+<img src="/2017/12/27/golang-glide/glide.png" alt="glide.png" title="">
+<h2 id="安裝方式-window-10"><a href="#安裝方式-window-10" class="headerlink" title="安裝方式 (window 10)"></a>安裝方式 (window 10)</h2><p>下載取得專案</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go get github.com/Masterminds/glide</div></pre></td></tr></table></figure>
+<p>進入 <code>GOPATH\src\github.com\Masterminds\glide</code> 資料夾</p>
+<p>編譯執行檔</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go build glide.go</div></pre></td></tr></table></figure>
+<p>執行檔移置 bin 資料夾</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go install</div></pre></td></tr></table></figure>
+<p>如果環境變數有設定<code>go/bin</code>就可以直接執行</p>
+<h2 id="建立一個新專案"><a href="#建立一個新專案" class="headerlink" title="建立一個新專案"></a>建立一個新專案</h2><p>建立<code>glide.yaml</code>，這是 glide 的專案設定檔，類似 npm 的 package.json</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide init</div></pre></td></tr></table></figure>
+<h2 id="新增第三方套件"><a href="#新增第三方套件" class="headerlink" title="新增第三方套件"></a>新增第三方套件</h2><p>假設我們要新增 <code>github.com/foo/bar</code> 套件 (後面可以接版號)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide get github.com/foo/bar<span class="comment">#^1.2.3</span></div></pre></td></tr></table></figure>
+<p><code>glide</code> 會幫你在專案中新增一個 <code>vendor</code> 資料夾，並把相依的套件放在裡面，之後執行<code>go</code>時，會先尋找 <code>vendor</code> 資料夾有無套件，如果沒有才會去找 <code>$GOPATH</code></p>
+<h2 id="下載專案後安裝相依套件"><a href="#下載專案後安裝相依套件" class="headerlink" title="下載專案後安裝相依套件"></a>下載專案後安裝相依套件</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glide install</div></pre></td></tr></table></figure>
+<p>如果專案內沒有 glide.lock 檔案，當您執行 glide install 後，其實系統會先執行 glide up 產生 glide.lock 檔案</p>
+<h2 id="window10-安裝問題處理"><a href="#window10-安裝問題處理" class="headerlink" title="window10 安裝問題處理"></a>window10 安裝問題處理</h2><p>如果出現錯誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ERROR] Unable to export dependencies to vendor directory: Error moving files: exit status 1. output: Access is denied. 0 dir(s) moved.</div></pre></td></tr></table></figure>
+<p>這是一個 window10 的 bug ，請去修改 <code>github.com/Masterminds/glide/path/winbug.go</code> 76 行 <code>move 改 xcopy</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Handking windows cases first</span></div><div class="line">	<span class="keyword">if</span> runtime.GOOS == <span class="string">"windows"</span> &#123;</div><div class="line">		msg.Debug(<span class="string">"Detected Windows. Moving files using windows command"</span>)</div><div class="line">		<span class="comment">// cmd := exec.Command("cmd.exe", "/c", "move", o, n) //move改xcopy</span></div><div class="line">		cmd := exec.Command(<span class="string">"cmd.exe"</span>, <span class="string">"/c"</span>, <span class="string">"xcopy /s/y"</span>, o, n+<span class="string">"\\"</span>)</div><div class="line">		output, err := cmd.CombinedOutput()</div><div class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">"Error moving files: %s. output: %s"</span>, err, output)</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>修改後重新編譯一次可</p>
+<h2 id="其他-Glide-參數"><a href="#其他-Glide-參數" class="headerlink" title="其他 Glide 參數"></a>其他 Glide 參數</h2><ul>
+<li><code>--all-dependencies</code> 下載相依套件全部的 dependencies</li>
+<li><code>-s</code> 下載後刪除 .git 目錄</li>
+<li><code>-v</code> 移除 Godeps/_workspace 等相關目錄</li>
+</ul>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cainmaila.github.io/2017/12/27/golang-glide/" data-id="cjbohcode00005ovm8cjxc8ad" class="article-share-link">Partager</a>
+      
+        <a href="https://cainmaila.github.io/2017/12/27/golang-glide/#disqus_thread" class="article-comment-link">Commentaires</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/08/11/cordova-vue/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Vue-Cli整合至Cordova(一)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
         
           <aside id="sidebar">
@@ -216,11 +295,13 @@
 <script>
   var disqus_shortname = 'cainmaila';
   
+  var disqus_url = 'https://cainmaila.github.io/2017/12/27/golang-glide/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
